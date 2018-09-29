@@ -28,7 +28,7 @@ Term: Spring 2018
 	+ Mu, Jay
 	+ Zheng, Wanyi
 
-+ **Project summary**: This project is an update and expansion of [a previous project](https://github.com/TZstatsADS/Fall2017-project2-grp9). It is an Rshiny app which recommends colleges for perspective college students.
++ **Project summary**: This project is an update and expansion of [a previous project](https://github.com/TZstatsADS/Fall2017-project2-grp9) from the same class in Fall 2017. It is an Rshiny app which recommends colleges for prospective college students.
 
 + **Link: (to be updated)**
 
