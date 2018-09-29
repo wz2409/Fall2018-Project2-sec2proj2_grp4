@@ -408,3 +408,16 @@ shinyServer(function(input, output) {
   
   
   
+<<<<<<< HEAD
+||||||| merged common ancestors
+  })
+=======
+<<<<<<< HEAD
+  }) 
+#Hello world
+
+# Test comment by Yaoqi
+=======
+  })
+>>>>>>> 8818f654ebf36d9611e5f51b70173bc2b6ecc23a
+>>>>>>> cbb6740f7ce754e1416a4b54ff8c78181043a9ad
