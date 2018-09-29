@@ -1,168 +1,412 @@
 library(shiny)
-library(choroplethr)
-library(choroplethrZip)
-library(dplyr)
-library(leaflet)
 library(maps)
-library(rgdal)
+library(leaflet)
+library(DT)
+library(dplyr)
+library(plotly)
+library(ggplot2)
 
-## Define Manhattan's neighborhood
-man.nbhd=c("all neighborhoods", "Central Harlem", 
-           "Chelsea and Clinton",
-           "East Harlem", 
-           "Gramercy Park and Murray Hill",
-           "Greenwich Village and Soho", 
-           "Lower Manhattan",
-           "Lower East Side", 
-           "Upper East Side", 
-           "Upper West Side",
-           "Inwood and Washington Heights")
-zip.nbhd=as.list(1:length(man.nbhd))
-zip.nbhd[[1]]=as.character(c(10026, 10027, 10030, 10037, 10039))
-zip.nbhd[[2]]=as.character(c(10001, 10011, 10018, 10019, 10020))
-zip.nbhd[[3]]=as.character(c(10036, 10029, 10035))
-zip.nbhd[[4]]=as.character(c(10010, 10016, 10017, 10022))
-zip.nbhd[[5]]=as.character(c(10012, 10013, 10014))
-zip.nbhd[[6]]=as.character(c(10004, 10005, 10006, 10007, 10038, 10280))
-zip.nbhd[[7]]=as.character(c(10002, 10003, 10009))
-zip.nbhd[[8]]=as.character(c(10021, 10028, 10044, 10065, 10075, 10128))
-zip.nbhd[[9]]=as.character(c(10023, 10024, 10025))
-zip.nbhd[[10]]=as.character(c(10031, 10032, 10033, 10034, 10040))
+load("../data/workdata.Rdata")
+load("../data/fulldata.Rdata")
 
-## Load housing data
-load("../output/count.RData")
-load("../output/mh2009use.RData")
-
-# Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-  
-  ## Neighborhood name
-  output$text = renderText({"Selected:"})
-  output$text1 = renderText({
-      paste("{ ", man.nbhd[as.numeric(input$nbhd)+1], " }")
+  map = leaflet() %>%
+    addTiles() %>%
+    setView(lng = 360 - 95,
+            lat = 40,
+            zoom = 4)
+  output$mymap = renderLeaflet(map)
+  #Filter Data ----------------------------------------------------------------------------------------
+  major <- reactive({
+    major <- input$major
   })
   
-  ## Panel 1: summary plots of time trends, 
-  ##          unit price and full price of sales. 
-  
-  output$distPlot <- renderPlot({
-    
-    ## First filter data for selected neighborhood
-    mh2009.sel=mh2009.use
-    if(input$nbhd>0){
-      mh2009.sel=mh2009.use%>%
-                  filter(region %in% zip.nbhd[[as.numeric(input$nbhd)]])
-    }
-    
-    ## Monthly counts
-    month.v=as.vector(table(mh2009.sel$sale.month))
-    
-    ## Price: unit (per sq. ft.) and full
-    type.price=data.frame(bldg.type=c("10", "13", "25", "28"))
-    type.price.sel=mh2009.sel%>%
-                group_by(bldg.type)%>%
-                summarise(
-                  price.mean=mean(sale.price, na.rm=T),
-                  price.median=median(sale.price, na.rm=T),
-                  unit.mean=mean(unit.price, na.rm=T),
-                  unit.median=median(unit.price, na.rm=T),
-                  sale.n=n()
-                )
-    type.price=left_join(type.price, type.price.sel, by="bldg.type")
-    
-    ## Making the plots
-    layout(matrix(c(1,1,1,1,2,2,3,3,2,2,3,3), 3, 4, byrow=T))
-    par(cex.axis=1.3, cex.lab=1.5, 
-        font.axis=2, font.lab=2, col.axis="dark gray", bty="n")
-    
-    ### Sales monthly counts
-    plot(1:12, month.v, xlab="Months", ylab="Total sales", 
-         type="b", pch=21, col="black", bg="red", 
-         cex=2, lwd=2, ylim=c(0, max(month.v,na.rm=T)*1.05))
-    
-    ### Price per square foot
-    plot(c(0, max(type.price[,c(4,5)], na.rm=T)), 
-         c(0,5), 
-         xlab="Price per square foot", ylab="", 
-         bty="l", type="n")
-    text(rep(0, 4), 1:4+0.5, paste(c("coops", "condos", "luxury hotels", "comm. condos"), 
-                                  type.price$sale.n, sep=": "), adj=0, cex=1.5)
-    points(type.price$unit.mean, 1:nrow(type.price), pch=16, col=2, cex=2)
-    points(type.price$unit.median, 1:nrow(type.price),  pch=16, col=4, cex=2)
-    segments(type.price$unit.mean, 1:nrow(type.price), 
-              type.price$unit.median, 1:nrow(type.price),
-             lwd=2)    
-    
-    ### full price
-    plot(c(0, max(type.price[,-1], na.rm=T)), 
-         c(0,5), 
-         xlab="Sales Price", ylab="", 
-         bty="l", type="n")
-    text(rep(0, 4), 1:4+0.5, paste(c("coops", "condos", "luxury hotels", "comm. condos"), 
-                                   type.price$sale.n, sep=": "), adj=0, cex=1.5)
-    points(type.price$price.mean, 1:nrow(type.price), pch=16, col=2, cex=2)
-    points(type.price$price.median, 1:nrow(type.price),  pch=16, col=4, cex=2)
-    segments(type.price$price.mean, 1:nrow(type.price), 
-             type.price$price.median, 1:nrow(type.price),
-             lwd=2)    
+  stp <- reactive({
+    stp <- input$schtype
   })
   
-  ## Panel 2: map of sales distribution
-  output$distPlot1 <- renderPlot({
-    count.df.sel=count.df
-    if(input$nbhd>0){
-      count.df.sel=count.df%>%
-        filter(region %in% zip.nbhd[[as.numeric(input$nbhd)]])
-    }
-    # make the map for selected neighhoods
-    
-    zip_choropleth(count.df.sel,
-                   title       = "2009 Manhattan housing sales",
-                   legend      = "Number of sales",
-                   county_zoom = 36061)
+  ct <- reactive({
+    ct <- input$city
   })
   
-  ## Panel 3: leaflet
-  output$map <- renderLeaflet({
-    count.df.sel=count.df
-    if(input$nbhd>0){
-      count.df.sel=count.df%>%
-        filter(region %in% zip.nbhd[[as.numeric(input$nbhd)]])
+  hd <- reactive({
+    hd <- input$hdeg
+  })
+  
+  st <- reactive({
+    st <- input$location
+  })
+  
+  cost <- reactive({
+    cost <- input$cost
+  })
+  sat <- reactive({
+    sat <- input$sat
+  })
+  act <- reactive({
+    act <- input$act
+  })
+  
+  
+  d6 <- reactive({
+    d6 <-
+      filter(work.data,
+             as.numeric(COSTT4_A) >= cost()[1] &
+               as.numeric(COSTT4_A) <= cost()[2])
+  })
+  
+  d7 <- reactive({
+    d7 <- filter(d6(), as.numeric(SAT_AVG) < sat())
+    
+  })
+  
+  d8 <- reactive({
+    d8 <- filter(d7(), as.numeric(ACTCMMID) < act())
+  })
+  
+  
+  d1 <- reactive({
+    if (major() == "-----") {
+      d1 <- d8()
     }
+    else {
+      d1 <- d8()[d8()[, major()] == 1, ]
+    }
+  })
+  
+  d2 <- reactive({
+    if (stp() == "-----") {
+      d2 <- d1()
+    }
+    else {
+      d2 <- filter(d1(), CONTROL == stp())
+    }
+  })
+  
+  d3 <- reactive({
+    if (ct() == "-----") {
+      d3 <- d2()
+    }
+    else {
+      d3 <- filter(d2(), LOCALE == ct())
+    }
+  })
+  
+  d4 <- reactive({
+    if (hd() == "-----") {
+      d4 <- d3()
+    }
+    else {
+      d4 <- filter(d3(), HIGHDEG == hd())
+    }
+  })
+  
+  d5 <- reactive({
+    if (st() == "-----") {
+      d5 <- d4()
+    }
+    else {
+      d5 <- filter(d4(), STABBR == st())
+    }
+  })
+  
+  
+  # leaflet(data =d5())%>%
+  #   addTiles()%>%
+  #   addMarkers(~long, ~lat)
+  
+  output$mymap <- renderLeaflet({
+    urls <-
+      paste0(
+        as.character("<b><a href='http://"),
+        as.character(d5()$INSTURL),
+        "'>",
+        as.character(d5()$INSTNM),
+        as.character("</a></b>")
+      )
+    content <- paste(sep = "<br/>",
+                     urls,
+                     paste("Rank:", as.character(d5()$Rank)))
     
-    # From https://data.cityofnewyork.us/Business/Zip-Code-Boundaries/i8iw-xf4u/data
-    NYCzipcodes <- readOGR("../data/ZIP_CODE_040114.shp",
-                           #layer = "ZIP_CODE", 
-                           verbose = FALSE)
+    s = input$universities.table_rows_selected
     
-    selZip <- subset(NYCzipcodes, NYCzipcodes$ZIPCODE %in% count.df.sel$region)
+    url2 <-
+      paste0(
+        as.character("<b><a href='http://"),
+        as.character(d5()$INSTURL[s]),
+        "'>",
+        as.character(d5()$INSTNM[s]),
+        as.character("</a></b>")
+      )
+    content2 <- paste(sep = "<br/>",
+                      url2,
+                      paste("Rank:", as.character(d5()$Rank[s])))
     
-    # ----- Transform to EPSG 4326 - WGS84 (required)
-    subdat<-spTransform(selZip, CRS("+init=epsg:4326"))
-    
-    # ----- save the data slot
-    subdat_data=subdat@data[,c("ZIPCODE", "POPULATION")]
-    subdat.rownames=rownames(subdat_data)
-    subdat_data=
-      subdat_data%>%left_join(count.df, by=c("ZIPCODE" = "region"))
-    rownames(subdat_data)=subdat.rownames
-    
-    # ----- to write to geojson we need a SpatialPolygonsDataFrame
-    subdat<-SpatialPolygonsDataFrame(subdat, data=subdat_data)
-    
-    # ----- set uo color pallette https://rstudio.github.io/leaflet/colors.html
-    # Create a continuous palette function
-    pal <- colorNumeric(
-      palette = "Blues",
-      domain = subdat$POPULATION
+    RedPinIcon <- makeIcon(
+      iconUrl = "https://icon-icons.com/icons2/510/PNG/512/university_icon-icons.com_49967.png",
+      iconWidth = 38, iconHeight = 38,
+      iconAnchorX = 22, iconAnchorY = 94,
     )
     
-    leaflet(subdat) %>%
-      addTiles()%>%
-      addPolygons(
-        stroke = T, weight=1,
-        fillOpacity = 0.6,
-        color = ~pal(POPULATION)
-      )
+    if (length(s)) {
+      mapStates = map("state", fill = TRUE, plot = FALSE)
+      leaflet(data = mapStates) %>% addTiles() %>%
+        addMarkers(as.numeric(d5()$LONGITUDE[-s]),
+                   as.numeric(d5()$LATITUDE[-s]),
+                   popup = content) %>%
+        addMarkers(
+          as.numeric(d5()$LONGITUDE[s]),
+          as.numeric(d5()$LATITUDE[s]),
+          icon = RedPinIcon,
+          popup = content2
+        )
+      
+    }
+    
+    else{
+      mapStates = map("state", fill = TRUE, plot = FALSE)
+      leaflet(data = mapStates) %>% addTiles() %>%
+        addMarkers(as.numeric(d5()$LONGITUDE),
+                   as.numeric(d5()$LATITUDE),
+                   popup = content)
+    }
+    
   })
-})
+  
+  
+  
+  #Table with University List --------------------------------------------------------------------------
+  
+  #Filtered data frame
+  
+  #Table output
+  output$universities.table = DT::renderDataTable({
+    work.data.table <-
+      subset(
+        d5(),
+        select = c(
+          "Rank",
+          "INSTNM",
+          "STABBR",
+          "ADM_RATE",
+          "ACTCMMID",
+          "SAT_AVG",
+          "TUITIONFEE_IN",
+          "TUITIONFEE_OUT"
+        )
+      )
+    
+    colnames(work.data.table) <-
+      c(
+        "Forbes Rank",
+        "Institution",
+        "State",
+        "Admission Rate",
+        "ACT Mid Point",
+        "Average SAT (admitted students)",
+        "Tuition (In-State)",
+        "Tuition (Out of State)"
+      )
+    
+    datatable(
+      work.data.table,
+      rownames = F,
+      selection = "single",
+      options = list(order = list(list(0, 'asc'), list(1, "asc")))
+    )  %>%
+      formatPercentage(c("Admission Rate"), digits = 0) %>%
+      formatCurrency(c("Tuition (In-State)", "Tuition (Out of State)"), digits = 0)
+  }, server = T)
+  
+  
+  
+  #Introduction-------------------------------------------------------------------------------------------
+  
+ 
+  #Selected indices--------------------------------------------------------------------------------------
+  
+  output$table.summary = renderTable({
+    #s = input$universities.table_rows_selected
+    s = input$universities.table_row_last_clicked
+    if (length(s)) {
+      sub <- d5()[s, ]
+      
+      Institution <-
+        c("Name",
+          "Website",
+          "City",
+          "Highest Degree",
+          "Control",
+          "City Size")
+      
+      Info <-
+        c(sub$INSTNM ,
+          sub$INSTURL,
+          sub$CITY,
+          sub$HIGHDEG,
+          sub$CONTROL,
+          sub$LOCALE)
+      
+      my.summary <- data.frame(cbind(Institution, Info))
+      my.summary
+      
+    } else
+      print("Please, select a University from the table below.")
+  })
+  
+  output$table.summary2 = renderTable({
+    #s = input$universities.table_rows_selected
+    s = input$universities.table_row_last_clicked
+    if (length(s)) {
+      university <- d5()$INSTNM[s]
+      sub <- filter(fulldata, INSTNM == university & Year == "2016")
+      
+      Demographics <-
+        c("Male %",
+          "Female %",
+          "Average age of entry",
+          "% of Undergraduates aged 25+")
+      
+      Info <-
+        c(
+          as.numeric(sub$UGDS_MEN) * 100,
+          as.numeric(sub$UGDS_WOMEN) * 100,
+          round(as.numeric(sub$AGE_ENTRY), digits = 2),
+          as.numeric(sub$UG25ABV) * 100
+        )
+      
+      my.summary <- data.frame(cbind(Demographics, Info))
+      names(my.summary) <- c("Demographics (2016)", "Info")
+      my.summary
+      
+    }
+  })
+  
+  output$table.summary3 = renderTable({
+    #s = input$universities.table_rows_selected
+    s = input$universities.table_row_last_clicked
+    if (length(s)) {
+      university <- d5()$INSTNM[s]
+      sub <- filter(fulldata, INSTNM == university)
+      sub[sub == "NULL"] <- NA
+      
+      Financial <-
+        c(
+          "Undergraduate students receiving federal loan %",
+          "Median Debt: Students who have completed",
+          "Median Debt: Students who have NOT completed",
+          "Median Earnings: Students 10 years after entry"
+        )
+      
+      Info <-
+        c(round(mean(as.numeric(sub$PCTFLOAN), na.rm = T) * 100, 2),
+          round(mean(
+            as.numeric(sub$GRAD_DEBT_MDN), na.rm = T
+          ), 0),
+          round(mean(
+            as.numeric(sub$WDRAW_DEBT_MDN), na.rm = T
+          ) * 100, 0),
+          round(mean(
+            as.numeric(sub$MD_EARN_WNE_P10), na.rm = T
+          ), 0))
+      
+      my.summary <- data.frame(cbind(Financial, Info))
+      names(my.summary) <-
+        c("Financial (last 10 years average)", "Info")
+      my.summary
+      
+    }
+  })
+  
+  #------------------------------------------------------------------------------------------------------
+  
+  #Graphical Analysis
+  
+  output$ADM <- renderPlotly({
+    s = input$universities.table_row_last_clicked
+    if (length(s)) {
+      university <- d5()$INSTNM[s]
+      edu <- filter(fulldata, INSTNM == university)
+      edu$ADM_RATE = as.numeric(edu$ADM_RATE)
+      edu$Year = as.numeric(edu$Year)
+      p <-
+        ggplot(data = edu, aes(x = Year, y = ADM_RATE)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Admission Rate with Trending")
+      ggplotly(p)
+    }
+    else {
+      ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
+    }
+  })
+  
+  output$SAT <- renderPlotly({
+    s = input$universities.table_row_last_clicked
+    if (length(s)) {
+      university <- d5()$INSTNM[s]
+      edu <- filter(fulldata, INSTNM == university)
+      edu$SAT_AVG = as.numeric(edu$SAT_AVG)
+      edu$Year = as.numeric(edu$Year)
+      b <-
+        ggplot(data = edu, aes(x = Year, y = SAT_AVG)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Average SAT with Trending")
+      ggplotly(b)
+    }
+    else  {
+      ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
+    }
+  })
+  
+  
+  output$ACT <- renderPlotly({
+    s = input$universities.table_row_last_clicked
+    if (length(s)) {
+      university <- d5()$INSTNM[s]
+      edu <- filter(fulldata, INSTNM == university)
+      edu$ACTCMMID = as.numeric(edu$ACTCMMID)
+      edu$Year = as.numeric(edu$Year)
+      a <-
+        ggplot(data = edu, aes(x = Year, y = ACTCMMID)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year ACT MID with Trending")
+      ggplotly(a)
+    }
+    else  {
+      ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
+    }
+  })
+  
+  output$FEM <- renderPlotly({
+    s = input$universities.table_row_last_clicked
+    if (length(s)) {
+      university <- d5()$INSTNM[s]
+      edu <- filter(fulldata, INSTNM == university)
+      edu$UGDS_WOMEN = as.numeric(edu$UGDS_WOMEN)
+      edu$Year = as.numeric(edu$Year)
+      d <-
+        ggplot(data = edu, aes(x = Year, y = UGDS_WOMEN)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Share of Female Undergrads with Trending")
+      ggplotly(d)
+    }
+    else  {
+      ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
+    }
+  })
+  
+  output$ENR <- renderPlotly({
+    s = input$universities.table_row_last_clicked
+    if (length(s)) {
+      university <- d5()$INSTNM[s]
+      edu <- filter(fulldata, INSTNM == university)
+      edu$UGDS = as.numeric(edu$UGDS)
+      edu$Year = as.numeric(edu$Year)
+      e <-
+        ggplot(data = edu, aes(x = Year, y = UGDS)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Enrollments with Trending")
+      ggplotly(e)
+    }
+    else {
+      ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
+    }
+  })
+  
+  
+  
+  
+  #------------------------------------------------------------------------------------------------------
+  
+  
+  })
