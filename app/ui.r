@@ -63,10 +63,10 @@ navbarPage("Find your university!", id="nav",
                                       sliderInput(inputId="sat",label = "SAT Score",value = 1600,min = 0,max = 1600,step = 1 ),
                                       sliderInput("act",label = "ACT Score",min=0,max=36, value =36,step = 1 ),
                                       
-                                      selectInput("location", "Where you want to take your college in?", choices = location),
+                                      selectInput("location", "Select State or Region", choices = location),
                                       selectInput("major", "Major", choices = Major),
-                                      selectInput("city", "City Size", choices = c("-----","City","Suburb","Town","Rural")),
-                                      selectInput("schtype", "Control of Instituion", choices = c("-----","Public","Private nonprofit","Private for-profit")),
+                                      selectInput("city", "Location", choices = c("-----","City","Suburb","Town","Rural")),
+                                      selectInput("schtype", "Type of Institution", choices = c("-----","Public","Private nonprofit","Private for-profit")),
                                       selectInput("hdeg", "Highest Degree", choices = c("-----","Graduate","Bachelor","Associate","Certificate","Non-degree-granting"))
                                       
                         )
