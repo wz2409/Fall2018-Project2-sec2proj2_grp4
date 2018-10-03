@@ -156,8 +156,7 @@ shinyServer(function(input, output) {
                   as.numeric(d5()$LONGITUDE[-s]),
                   as.numeric(d5()$LATITUDE[-s]),
                   popup = content) %>%
-        addCircleMarkers(
-                  clusterOptions = markerClusterOptions(),
+        addMarkers(
                   as.numeric(d5()$LONGITUDE[s]),
                   as.numeric(d5()$LATITUDE[s]),
                   icon = RedPinIcon,
