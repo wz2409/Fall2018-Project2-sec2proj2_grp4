@@ -54,10 +54,10 @@ navbarPage("Find your university!", id="nav",
                         
                         # Shiny versions prior to 0.11 should use class = "modal" instead.
                         absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                                      draggable = TRUE, top = "auto", left = 20, right = "auto", bottom = 10,
-                                      width = 330, height = "auto",
+                                      draggable = TRUE, top = 120, left = 20, right = "auto", bottom = 10,
+                                      width = 330, height = 700,
                                       
-                                      h2("Choose the university"),
+                                      h2(" "),
                                       
                                       sliderInput("cost", label = "Cost by Year ", min = 0, max =80000, value = c(1,80000)),
                                       sliderInput(inputId="sat",label = "SAT Score",value = 1600,min = 0,max = 1600,step = 1 ),
