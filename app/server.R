@@ -151,14 +151,17 @@ shinyServer(function(input, output) {
     if (length(s)) {
       mapStates = map("state", fill = TRUE, plot = FALSE)
       leaflet(data = mapStates) %>% addTiles() %>%
-        addMarkers(as.numeric(d5()$LONGITUDE[-s]),
-                   as.numeric(d5()$LATITUDE[-s]),
-                   popup = content) %>%
-        addMarkers(
-          as.numeric(d5()$LONGITUDE[s]),
-          as.numeric(d5()$LATITUDE[s]),
-          icon = RedPinIcon,
-          popup = content2
+        addCircleMarkers(
+                  clusterOptions = markerClusterOptions(),
+                  as.numeric(d5()$LONGITUDE[-s]),
+                  as.numeric(d5()$LATITUDE[-s]),
+                  popup = content) %>%
+        addCircleMarkers(
+                  clusterOptions = markerClusterOptions(),
+                  as.numeric(d5()$LONGITUDE[s]),
+                  as.numeric(d5()$LATITUDE[s]),
+                  icon = RedPinIcon,
+                  popup = content2
         )
       
     }
@@ -166,9 +169,11 @@ shinyServer(function(input, output) {
     else{
       mapStates = map("state", fill = TRUE, plot = FALSE)
       leaflet(data = mapStates) %>% addTiles() %>%
-        addMarkers(as.numeric(d5()$LONGITUDE),
-                   as.numeric(d5()$LATITUDE),
-                   popup = content)
+        addCircleMarkers(
+                  clusterOptions = markerClusterOptions(),
+                  as.numeric(d5()$LONGITUDE),
+                  as.numeric(d5()$LATITUDE),
+                  popup = content)
     }
     
   })
