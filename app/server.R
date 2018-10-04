@@ -323,6 +323,10 @@ shinyServer(function(input, output) {
   })
   
   #------------------------------------------------------------------------------------------------------
+
+
+  
+ 
   
   #Graphical Analysis
   
@@ -406,6 +410,7 @@ shinyServer(function(input, output) {
       ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
     }
   })
+ 
   
 })
   
