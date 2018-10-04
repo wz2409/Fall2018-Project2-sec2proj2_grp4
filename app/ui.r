@@ -107,19 +107,21 @@ navbarPage("Find your university!", id="nav",
                       
                       checkboxGroupInput("universities.table", "Variables to show:",
                                          c("SAT" = "SAT",
+                                           "ADM" = "ADM",
+                                           "FEM" = "FEM",
                                            "ACT" = "ACT",
-                                           "ENR" = "ENR")),
+                                           "ENR" = "ENR"))
      
                       
                  
                       #format = "####"),
                       # uiOutput("themesControl"), # the id
-                      actionButton(inputId = "clearAllBottom",
-                                   label = "Clear selection",
-                                   icon = icon("square-o")),
-                      actionButton(inputId = "selectAllBottom",
-                                   label = "Select all",
-                                   icon = icon("check-square-o"))
+                      # actionButton(inputId = "clearAllBottom",
+                      #             label = "Clear selection",
+                      #             icon = icon("square-o")),
+                      # actionButton(inputId = "selectAllBottom",
+                      #             label = "Select all",
+                       #            icon = icon("check-square-o"))
                     ),
                     mainPanel(
                       tabsetPanel(
@@ -128,10 +130,12 @@ navbarPage("Find your university!", id="nav",
                         #         dataTableOutput(outputId="dTable")
                         #), # end of "Dataset" tab panel
                         tabPanel(p(icon("line-chart"), "Visualize the Data"),
-                                 h4('SAT', align = "center"),
-                                 h5('Please hover over each point to see the Year and Total Number of Sets.', 
-                                    align ="center"),
-                                 plotlyOutput("SAT")
+                                 h4('Graphs', align = "center"),
+                                 plotlyOutput("SAT"),
+                                 plotlyOutput("ADM"),
+                                 plotlyOutput("FEM"),
+                                 plotlyOutput("ACT"),
+                                 plotlyOutput("ENR")
                              
                         ) # end of "Visualize the Data" tab panel
                         
@@ -139,7 +143,7 @@ navbarPage("Find your university!", id="nav",
                       
                     )
            ),         
-           tabPanel(title = "Admission Rate Trend", width = 12, solidHeader = T, plotlyOutput("ADM")),
+           # tabPanel(title = "Admission Rate Trend", width = 12, solidHeader = T, plotlyOutput("ADM")),
            # tabPanel(title = "Average SAT Trend", width = 12, solidHeader = T, plotlyOutput("SAT")),
            # tabPanel(title = "MID ACT Trend", width = 12, solidHeader = T, plotlyOutput("ACT")),
            # tabPanel(title = "Share of Female Students Trend", width = 12, solidHeader = T, plotlyOutput("FEM")),
