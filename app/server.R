@@ -6,6 +6,9 @@ library(dplyr)
 library(plotly)
 library(ggplot2)
 
+#require(devtools)
+#install_github('rCharts', 'ramnathv')
+
 load("../data/workdata.Rdata")
 load("../data/fulldata.Rdata")
 
