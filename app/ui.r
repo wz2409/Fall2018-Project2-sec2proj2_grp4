@@ -1,4 +1,4 @@
-packages.used=c("shiny", "plotly", "shinydashboard", "leaflet","DT", "leaflet")
+packages.used=c("shiny", "plotly", "shinydashboard", "leaflet", "DT")
 
 # check packages that need to be installed.
 packages.needed=setdiff(packages.used, 
@@ -12,7 +12,6 @@ if(length(packages.needed)>0){
 library(shiny)
 library(leaflet)
 library(maps)
-library(leaflet)
 library(DT)
 library(shinydashboard)
 library(plotly)
@@ -97,12 +96,62 @@ navbarPage("Find your university!", id="nav",
                                  
                                  
                                )),
-                    
-           tabPanel(title = "Admission Rate Trend", width = 12, solidHeader = T, plotlyOutput("ADM")),
-           tabPanel(title = "Average SAT Trend", width = 12, solidHeader = T, plotlyOutput("SAT")),
-           tabPanel(title = "MID ACT Trend", width = 12, solidHeader = T, plotlyOutput("ACT")),
-           tabPanel(title = "Share of Female Students Trend", width = 12, solidHeader = T, plotlyOutput("FEM")),
-           tabPanel(title = "Total Enrollments Trend", width = 12, solidHeader = T, plotlyOutput("ENR")),         
+           
+           tabPanel(title = "Data Exploration",
+                    sidebarPanel(
+                      sliderInput("timeline", 
+                                  "Timeline:", 
+                                  min = 1950,
+                                  max = 2017,
+                                  value = c(1997, 2015)),
+                      sliderInput("pieces", 
+                                  "Number of Pieces:",
+                                  min = -1,
+                                  max = 5922,
+                                  value = c(271, 2448)), 
+                      #format = "####"),
+                      # uiOutput("themesControl"), # the id
+                      actionButton(inputId = "clearAllBottom",
+                                   label = "Clear selection",
+                                   icon = icon("square-o")),
+                      actionButton(inputId = "selectAllBottom",
+                                   label = "Select all",
+                                   icon = icon("check-square-o"))
+                    ),
+                    mainPanel(
+                      tabsetPanel(
+                        # Data 
+                        tabPanel(p(icon("table"), "Dataset"),
+                                 dataTableOutput(outputId="dTable")
+                        # ), # end of "Dataset" tab panel
+                        # tabPanel(p(icon("line-chart"), "Visualize the Data"),
+                        #          h4('Number of Sets by Year', align = "center"),
+                        #          h5('Please hover over each point to see the Year and Total Number of Sets.', 
+                        #             align ="center"),
+                        #          showOutput("setsByYear", "nvd3"),
+                        #          h4('Number of Themes by Year', align = "center"),
+                        #          h5('Please hover over each bar to see the Year and Total Number of Themes.', 
+                        #             align ="center"),
+                        #          showOutput("themesByYear", "nvd3"),
+                        #          h4('Number of Pieces by Year', align = "center"),
+                        #          h5('Please hover over each point to see the Set Name, ID and Theme.', 
+                        #             align ="center"),
+                        #          showOutput("piecesByYear", "nvd3"),
+                        #          h4('Number of Average Pieces by Year', align = "center"),
+                        #          showOutput("piecesByYearAvg", "nvd3"),
+                        #          h4('Number of Average Pieces by Theme', align = "center"),
+                        #          showOutput("piecesByThemeAvg", "nvd3")
+                        ) # end of "Visualize the Data" tab panel
+                        
+                      )
+                      
+                    )
+           ),         
+           # tabPanel(title = "Admission Rate Trend", width = 12, solidHeader = T, plotlyOutput("ADM")),
+           # tabPanel(title = "Average SAT Trend", width = 12, solidHeader = T, plotlyOutput("SAT")),
+           # tabPanel(title = "MID ACT Trend", width = 12, solidHeader = T, plotlyOutput("ACT")),
+           # tabPanel(title = "Share of Female Students Trend", width = 12, solidHeader = T, plotlyOutput("FEM")),
+           # tabPanel(title = "Total Enrollments Trend", width = 12, solidHeader = T, plotlyOutput("ENR")),         
        
            
            conditionalPanel("false", icon("crosshair"))
