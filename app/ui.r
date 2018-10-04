@@ -110,7 +110,8 @@ navbarPage("Find your university!", id="nav",
                                            "ADM" = "ADM",
                                            "FEM" = "FEM",
                                            "ACT" = "ACT",
-                                           "ENR" = "ENR"))
+                                           "ENR" = "ENR")),
+                      actionLink("selectall","Select All")
      
                       
                  

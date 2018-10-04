@@ -9,7 +9,7 @@ library(ggplot2)
 load("../data/workdata.Rdata")
 load("../data/fulldata.Rdata")
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
   map = leaflet() %>%
     addTiles() %>%
     setView(lng = 360 - 95,
@@ -145,7 +145,7 @@ shinyServer(function(input, output) {
     RedPinIcon <- makeIcon(
       iconUrl = "https://icon-icons.com/icons2/510/PNG/512/university_icon-icons.com_49967.png",
       iconWidth = 38, iconHeight = 38,
-      iconAnchorX = 22, iconAnchorY = 94,
+      iconAnchorX = 22, iconAnchorY = 94
     )
     
     if (length(s)) {
@@ -411,6 +411,31 @@ shinyServer(function(input, output) {
     }
   })
  
+  observe({
+    if(input$selectall == 0) return(NULL) 
+    else if (input$selectall%%2 == 0)
+    {
+      updateCheckboxGroupInput(session,"universities.table", "Variables to show:",
+                               c("SAT" = "SAT",
+                                 "ADM" = "ADM",
+                                 "FEM" = "FEM",
+                                 "ACT" = "ACT",
+                                 "ENR" = "ENR"))
+    }
+    else
+    {
+      updateCheckboxGroupInput(session,"universities.table", "Variables to show:",choices=c("SAT" = "SAT",
+                                                                                            "ADM" = "ADM",
+                                                                                            "FEM" = "FEM",
+                                                                                            "ACT" = "ACT",
+                                                                                            "ENR" = "ENR"),
+                               selected=c("SAT" = "SAT",
+                                          "ADM" = "ADM",
+                                          "FEM" = "FEM",
+                                          "ACT" = "ACT",
+                                          "ENR" = "ENR"))
+    }
+  })
   
 })
   
