@@ -1,4 +1,4 @@
-packages.used=c("shiny", "plotly", "shinydashboard", "leaflet","DT", "leaflet")
+packages.used=c("shiny", "plotly", "shinydashboard", "leaflet", "DT","BH","markdown","rCharts","data.table","dplyr")
 
 # check packages that need to be installed.
 packages.needed=setdiff(packages.used, 
@@ -12,10 +12,14 @@ if(length(packages.needed)>0){
 library(shiny)
 library(leaflet)
 library(maps)
-library(leaflet)
 library(DT)
+library(rCharts)
 library(shinydashboard)
 library(plotly)
+library(BH)
+require(markdown)
+require(data.table)
+library(dplyr)
 
 # Choices for drop-downs
 location = c("-----","AK","AL","AR","AS","AZ","CA","CO","CT","DC","DE"
@@ -97,12 +101,54 @@ navbarPage("Find your university!", id="nav",
                                  
                                  
                                )),
-                    
-           tabPanel(title = "Admission Rate Trend", width = 12, solidHeader = T, plotlyOutput("ADM")),
-           tabPanel(title = "Average SAT Trend", width = 12, solidHeader = T, plotlyOutput("SAT")),
-           tabPanel(title = "MID ACT Trend", width = 12, solidHeader = T, plotlyOutput("ACT")),
-           tabPanel(title = "Share of Female Students Trend", width = 12, solidHeader = T, plotlyOutput("FEM")),
-           tabPanel(title = "Total Enrollments Trend", width = 12, solidHeader = T, plotlyOutput("ENR")),         
+           
+           tabPanel(title = "Data Exploration",
+                    sidebarPanel(
+                      
+                      checkboxGroupInput("universities.table", "Variables to show:",
+                                         c("SAT" = "SAT",
+                                           "ADM" = "ADM",
+                                           "FEM" = "FEM",
+                                           "ACT" = "ACT",
+                                           "ENR" = "ENR")),
+                      actionLink("selectall","Select All")
+     
+                      
+                 
+                      #format = "####"),
+                      # uiOutput("themesControl"), # the id
+                      # actionButton(inputId = "clearAllBottom",
+                      #             label = "Clear selection",
+                      #             icon = icon("square-o")),
+                      # actionButton(inputId = "selectAllBottom",
+                      #             label = "Select all",
+                       #            icon = icon("check-square-o"))
+                    ),
+                    mainPanel(
+                      tabsetPanel(
+                        # Data 
+                        #tabPanel(p(icon("table"), "Dataset"),
+                        #         dataTableOutput(outputId="dTable")
+                        #), # end of "Dataset" tab panel
+                        tabPanel(p(icon("line-chart"), "Visualize the Data"),
+                                 h4('Graphs', align = "center"),
+                                 plotlyOutput("SAT"),
+                                 plotlyOutput("ADM"),
+                                 plotlyOutput("FEM"),
+                                 plotlyOutput("ACT"),
+                                 plotlyOutput("ENR")
+                             
+                        ) # end of "Visualize the Data" tab panel
+                        
+                      )
+                      
+                    )
+           ),         
+           # tabPanel(title = "Admission Rate Trend", width = 12, solidHeader = T, plotlyOutput("ADM")),
+           # tabPanel(title = "Average SAT Trend", width = 12, solidHeader = T, plotlyOutput("SAT")),
+           # tabPanel(title = "MID ACT Trend", width = 12, solidHeader = T, plotlyOutput("ACT")),
+           # tabPanel(title = "Share of Female Students Trend", width = 12, solidHeader = T, plotlyOutput("FEM")),
+           # tabPanel(title = "Total Enrollments Trend", width = 12, solidHeader = T, plotlyOutput("ENR")),         
        
            
            conditionalPanel("false", icon("crosshair"))
