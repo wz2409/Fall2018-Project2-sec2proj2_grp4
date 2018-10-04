@@ -142,10 +142,10 @@ shinyServer(function(input, output, session) {
                       url2,
                       paste("Rank:", as.character(d5()$Rank[s])))
     
-    RedPinIcon <- makeIcon(
+    CollegeIcon <- makeIcon(
       iconUrl = "https://icon-icons.com/icons2/510/PNG/512/university_icon-icons.com_49967.png",
       iconWidth = 38, iconHeight = 38,
-      iconAnchorX = 22, iconAnchorY = 94
+      iconAnchorX = 19, iconAnchorY = 19
     )
     
     if (length(s)) {
@@ -159,7 +159,7 @@ shinyServer(function(input, output, session) {
         addMarkers(
                   as.numeric(d5()$LONGITUDE[s]),
                   as.numeric(d5()$LATITUDE[s]),
-                  icon = RedPinIcon,
+                  icon = CollegeIcon,
                   popup = content2
         )
       
