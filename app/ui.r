@@ -61,11 +61,9 @@ navbarPage("Find your university!", id="nav",
                                       draggable = TRUE, top = 120, left = 20, right = "auto", bottom = 10,
                                       width = 330, height = 700,
                                       
-                                      h2(" "),
-                                      
-                                      sliderInput("cost", label = "Cost by Year ", min = 10000, max =80000,step = 500, value = c(10000,80000)),
-                                      sliderInput(inputId="sat",label = "SAT Score",value = 1600,min = 750,max = 1600,step = 10),
-                                      sliderInput("act",label = "ACT Score",min=15,max=36, value =36,step = 1 ),
+                                      sliderInput("cost", label = "Cost by Year ", min = 0, max =80000, value = c(1,80000)),
+                                      sliderInput(inputId="sat",label = "SAT Score",value = 1600,min = 0,max = 1600,step = 1 ),
+                                      sliderInput("act",label = "ACT Score",min=0,max=36, value =36,step = 1 ),
                                       
                                       selectInput("location", "Select State or Region", choices = location),
                                       selectInput("major", "Major", choices = Major),
@@ -75,10 +73,14 @@ navbarPage("Find your university!", id="nav",
                                       
                         )
                         
+                                
+                                 
+                        )
+                        
                         # tags$div(id="cite",
                         #          'Data compiled for ', tags$em('Coming Apart: The State of White America, 1960–2010'), ' by Charles Murray (Crown Forum, 2012).'
                         #  )
-                    )
+                    
            ),
            
            tabPanel("Ranking",
@@ -95,9 +97,9 @@ navbarPage("Find your university!", id="nav",
        
            tabPanel(title="Detailed Summary", width = 12, solidHeader = T, 
                                fluidRow(
-                                 column(3,tableOutput("table.summary")),
-                                 column(3,tableOutput("table.summary2")),
-                                 column(4,tableOutput("table.summary3"))
+                                 tableOutput("table.summary"),
+                                 tableOutput("table.summary2"),
+                                 tableOutput("table.summary3")
                                  
                                  
                                )),
@@ -105,13 +107,15 @@ navbarPage("Find your university!", id="nav",
            tabPanel(title = "Data Exploration",
                     sidebarPanel(
                       
-                      checkboxGroupInput("universities.table", "Variables to show:",
+                      
+                      selectInput("universities.table", "Variables to show:",
                                          c("SAT" = "SAT",
                                            "ADM" = "ADM",
                                            "FEM" = "FEM",
                                            "ACT" = "ACT",
-                                           "ENR" = "ENR")),
-                      actionLink("selectall","Select All")
+                                           "ENR" = "ENR"))
+                      # actionLink("selectall","Select All")
+                      
      
                       
                  
@@ -130,6 +134,7 @@ navbarPage("Find your university!", id="nav",
                         #tabPanel(p(icon("table"), "Dataset"),
                         #         dataTableOutput(outputId="dTable")
                         #), # end of "Dataset" tab panel
+                        
                         tabPanel(p(icon("line-chart"), "Visualize the Data"),
                                  h4('Graphs', align = "center"),
                                  plotlyOutput("SAT"),

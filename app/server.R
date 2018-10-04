@@ -6,9 +6,6 @@ library(dplyr)
 library(plotly)
 library(ggplot2)
 
-#require(devtools)
-#install_github('rCharts', 'ramnathv')
-
 load("../data/workdata.Rdata")
 load("../data/fulldata.Rdata")
 
@@ -414,31 +411,31 @@ shinyServer(function(input, output, session) {
     }
   })
  
-  observe({
-    if(input$selectall == 0) return(NULL) 
-    else if (input$selectall%%2 == 0)
-    {
-      updateCheckboxGroupInput(session,"universities.table", "Variables to show:",
-                               c("SAT" = "SAT",
-                                 "ADM" = "ADM",
-                                 "FEM" = "FEM",
-                                 "ACT" = "ACT",
-                                 "ENR" = "ENR"))
-    }
-    else
-    {
-      updateCheckboxGroupInput(session,"universities.table", "Variables to show:",choices=c("SAT" = "SAT",
-                                                                                            "ADM" = "ADM",
-                                                                                            "FEM" = "FEM",
-                                                                                            "ACT" = "ACT",
-                                                                                            "ENR" = "ENR"),
-                               selected=c("SAT" = "SAT",
-                                          "ADM" = "ADM",
-                                          "FEM" = "FEM",
-                                          "ACT" = "ACT",
-                                          "ENR" = "ENR"))
-    }
-  })
+  # observe({
+  #  if(input$selectall == 0) return(NULL) 
+  #  else if (input$selectall%%2 == 0)
+  #  {
+  #    updateCheckboxGroupInput(session,"universities.table", "Variables to show:",
+  #                             c("SAT" = "SAT",
+  #                               "ADM" = "ADM",
+  #                               "FEM" = "FEM",
+  #                               "ACT" = "ACT",
+  #                               "ENR" = "ENR"))
+  #  }
+  #  else
+  #  {
+  #    updateCheckboxGroupInput(session,"universities.table", "Variables to show:",choices=c("SAT" = "SAT",
+  #                                                                                          "ADM" = "ADM",
+  #                                                                                          "FEM" = "FEM",
+  #                                                                                          "ACT" = "ACT",
+  #                                                                                          "ENR" = "ENR"),
+  #                             selected=c("SAT" = "SAT",
+  #                                        "ADM" = "ADM",
+  #                                        "FEM" = "FEM",
+  #                                        "ACT" = "ACT",
+  #                                        "ENR" = "ENR"))
+  #  }
+  #})
   
 })
   
