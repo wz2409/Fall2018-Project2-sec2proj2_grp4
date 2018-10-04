@@ -83,10 +83,6 @@ navbarPage("Find your university!", id="nav",
                                 
                                  
                         )
-                        
-                        # tags$div(id="cite",
-                        #          'Data compiled for ', tags$em('Coming Apart: The State of White America, 1960–2010'), ' by Charles Murray (Crown Forum, 2012).'
-                        #  )
                     
            ),
            
@@ -104,9 +100,7 @@ navbarPage("Find your university!", id="nav",
        
            tabPanel(title="Detailed Summary", width = 12, solidHeader = T, 
                                fluidRow(
-                                 tableOutput("table.summary"),
-                                 tableOutput("table.summary2"),
-                                 tableOutput("table.summary3")
+                                 tableOutput("table.summary")
                                  
                                  
                                )),

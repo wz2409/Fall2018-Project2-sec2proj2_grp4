@@ -234,93 +234,68 @@ shinyServer(function(input, output, session) {
     #s = input$universities.table_row_last_clicked
     if (length(s)) {
       sub <- d5()[s, ]
+      n = length(s)
       
-      Institution <-
+      university <- sub$INSTNM
+      sub_1 <- filter(fulldata, INSTNM == university)
+      
+      sub_2 <- filter(fulldata, INSTNM == university)
+      sub_2[sub_2 == "NULL"] <- NA
+      
+      Basic <-
         c("Name",
           "Website",
           "City",
           "Highest Degree",
           "Control",
-          "City Size")
+          "City Size",
+          "Male %",
+          "Female %",
+          "Average age of entry",
+          "% of Undergraduates aged 25+",
+          "Undergraduate students receiving federal loan %",
+          "Median Debt: Students who have completed",
+          "Median Debt: Students who have NOT completed",
+          "Median Earnings: Students 10 years after entry")
       
-      Info <-
-        c(sub$INSTNM ,
-          sub$INSTURL,
-          sub$CITY,
-          sub$HIGHDEG,
-          sub$CONTROL,
-          sub$LOCALE)
+      Info <-list()
+      Info[[1]]<-data.frame(Basic)
+      for (i in 1:n){
+        Institution<-c(sub[i,]$INSTNM ,
+                       sub[i,]$INSTURL,
+                       sub[i,]$CITY,
+                       sub[i,]$HIGHDEG,
+                       sub[i,]$CONTROL,
+                       sub[i,]$LOCALE,
+                       
+                       as.numeric(sub_1[i,]$UGDS_MEN) * 100,
+                       as.numeric(sub_1[i,]$UGDS_WOMEN) * 100,
+                       round(as.numeric(sub_1[i,]$AGE_ENTRY), digits = 2),
+                       as.numeric(sub_1[i,]$UG25ABV) * 100,
+                       
+                       round(mean(as.numeric(sub_2[i,]$PCTFLOAN), na.rm = T) * 100, 2),
+                       round(mean(
+                         as.numeric(sub_2[i,]$GRAD_DEBT_MDN), na.rm = T
+                       ), 0),
+                       round(mean(
+                         as.numeric(sub_2[i,]$WDRAW_DEBT_MDN), na.rm = T
+                       ) * 100, 0),
+                       round(mean(
+                         as.numeric(sub_2[i,]$MD_EARN_WNE_P10), na.rm = T
+                       ), 0))
+        Info[[i+1]]<-data.frame(Institution)
+      }
       
-      my.summary <- data.frame(cbind(Institution, Info))
-      my.summary
+      
+      #my.summary <- data.frame(cbind(Institution, Info))
+      #my.summary
+      Info
       
     } else
       print("Please, select a University from the table below.")
   })
   
-  output$table.summary2 = renderTable({
-    s = input$universities.table_rows_selected
-    #s = input$universities.table_row_last_clicked
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      sub <- filter(fulldata, INSTNM == university & Year == "2016")
-      
-      Demographics <-
-        c("Male %",
-          "Female %",
-          "Average age of entry",
-          "% of Undergraduates aged 25+")
-      
-      Info <-
-        c(
-          as.numeric(sub$UGDS_MEN) * 100,
-          as.numeric(sub$UGDS_WOMEN) * 100,
-          round(as.numeric(sub$AGE_ENTRY), digits = 2),
-          as.numeric(sub$UG25ABV) * 100
-        )
-      
-      my.summary <- data.frame(cbind(Demographics, Info))
-      names(my.summary) <- c("Demographics (2016)", "Info")
-      my.summary
-      
-    }
-  })
   
-  output$table.summary3 = renderTable({
-    s = input$universities.table_rows_selected
-    #s = input$universities.table_row_last_clicked
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      sub <- filter(fulldata, INSTNM == university)
-      sub[sub == "NULL"] <- NA
-      
-      Financial <-
-        c(
-          "Undergraduate students receiving federal loan %",
-          "Median Debt: Students who have completed",
-          "Median Debt: Students who have NOT completed",
-          "Median Earnings: Students 10 years after entry"
-        )
-      
-      Info <-
-        c(round(mean(as.numeric(sub$PCTFLOAN), na.rm = T) * 100, 2),
-          round(mean(
-            as.numeric(sub$GRAD_DEBT_MDN), na.rm = T
-          ), 0),
-          round(mean(
-            as.numeric(sub$WDRAW_DEBT_MDN), na.rm = T
-          ) * 100, 0),
-          round(mean(
-            as.numeric(sub$MD_EARN_WNE_P10), na.rm = T
-          ), 0))
-      
-      my.summary <- data.frame(cbind(Financial, Info))
-      names(my.summary) <-
-        c("Financial (last 10 years average)", "Info")
-      my.summary
-      
-    }
-  })
   
   #------------------------------------------------------------------------------------------------------
 
