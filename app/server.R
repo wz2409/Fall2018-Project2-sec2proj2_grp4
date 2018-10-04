@@ -215,7 +215,7 @@ shinyServer(function(input, output) {
     datatable(
       work.data.table,
       rownames = F,
-      selection = "single",
+      selection = "multiple",
       options = list(order = list(list(0, 'asc'), list(1, "asc")))
     )  %>%
       formatPercentage(c("Admission Rate"), digits = 0) %>%
@@ -230,8 +230,8 @@ shinyServer(function(input, output) {
   #Selected indices--------------------------------------------------------------------------------------
   
   output$table.summary = renderTable({
-    #s = input$universities.table_rows_selected
-    s = input$universities.table_row_last_clicked
+    s = input$universities.table_rows_selected
+    #s = input$universities.table_row_last_clicked
     if (length(s)) {
       sub <- d5()[s, ]
       
@@ -259,8 +259,8 @@ shinyServer(function(input, output) {
   })
   
   output$table.summary2 = renderTable({
-    #s = input$universities.table_rows_selected
-    s = input$universities.table_row_last_clicked
+    s = input$universities.table_rows_selected
+    #s = input$universities.table_row_last_clicked
     if (length(s)) {
       university <- d5()$INSTNM[s]
       sub <- filter(fulldata, INSTNM == university & Year == "2016")
@@ -287,8 +287,8 @@ shinyServer(function(input, output) {
   })
   
   output$table.summary3 = renderTable({
-    #s = input$universities.table_rows_selected
-    s = input$universities.table_row_last_clicked
+    s = input$universities.table_rows_selected
+    #s = input$universities.table_row_last_clicked
     if (length(s)) {
       university <- d5()$INSTNM[s]
       sub <- filter(fulldata, INSTNM == university)
