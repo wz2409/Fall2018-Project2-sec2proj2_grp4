@@ -141,8 +141,19 @@ shinyServer(function(input, output, session) {
         as.character(d5()$INSTNM[s]),
         as.character("</a></b>")
       )
+    
+    url3 <-
+      paste0(
+        as.character("<b><a href='http://"),
+        as.character(d5()$INSTURL[s]),
+        "'>",
+        as.character(d5()$INSTURL[s]),
+        as.character("</a></b>")
+      )
+    
+    
     content2 <- paste(sep = "<br/>",
-                      url2,
+                      url3,
                       paste("Rank:", as.character(d5()$Rank[s])))
     
     content3 <- paste(as.character(d5()$INSTNM[s]))
@@ -166,7 +177,8 @@ shinyServer(function(input, output, session) {
                   as.numeric(d5()$LATITUDE[s]),
                   icon = CollegeIcon,
                   popup = content2,
-                  label = content3
+                  label = content3,
+                  labelOptions = labelOptions(noHide = T,direction = "top",offset = c(0, -8), clickable=TRUE)
         )
       
     }
