@@ -26,7 +26,7 @@ Term: Spring 2018
 
 + **Link: TBA**
 
-+ **Contribution statement**: ([see here](doc/a_note_on_contributions.md))  
++ **Contribution statement**: [see here](doc/a_note_on_contributions.md)
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
