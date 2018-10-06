@@ -6,6 +6,9 @@ library(dplyr)
 library(plotly)
 library(ggplot2)
 
+options(warn=-1)
+#options(warn=0)
+
 load("../data/workdata.Rdata")
 load("../data/fulldata.Rdata")
 
