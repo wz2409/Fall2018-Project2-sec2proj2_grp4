@@ -68,9 +68,9 @@ navbarPage("Find your university!", id="nav",
                                       draggable = TRUE, top = 120, left = 20, right = "auto", bottom = 10,
                                       width = 330, height = 700,
                                       
-                                      sliderInput("cost", label = "Cost by Year ", min = 0, max =80000, value = c(1,80000)),
-                                      sliderInput(inputId="sat",label = "SAT Score",value = 1600,min = 0,max = 1600,step = 1 ),
-                                      sliderInput("act",label = "ACT Score",min=0,max=36, value =36,step = 1 ),
+                                      sliderInput("cost", label = "Cost by Year ", min = 10000, max =80000, value = c(10000,80000),step = 1000),
+                                      sliderInput(inputId="sat",label = "SAT Score",value = 1600,min = 750,max = 1600,step = 10 ),
+                                      sliderInput("act",label = "ACT Score",min=15,max=36, value =36,step = 1 ),
                                       
                                       selectInput("location", "Select State or Region", choices = location),
                                       selectInput("major", "Major", choices = Major),
