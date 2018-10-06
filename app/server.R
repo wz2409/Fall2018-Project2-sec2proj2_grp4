@@ -153,8 +153,14 @@ shinyServer(function(input, output, session) {
     
     
     content2 <- paste(sep = "<br/>",
+                      as.character(d5()$INSTNM[s]),
                       url3,
-                      paste("Rank:", as.character(d5()$Rank[s])))
+                      paste("Rank:", as.character(d5()$Rank[s])),
+                      paste(sep = "",as.character(d5()$CITY[s]),
+                            ", ",
+                            as.character(d5()$STABBR[s]),as.character(d5()$ZIP[s])),
+                      paste("Type:",as.character(d5()$CONTROL[s]))
+                      )
     
     content3 <- paste(as.character(d5()$INSTNM[s]))
     
