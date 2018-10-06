@@ -232,8 +232,8 @@ shinyServer(function(input, output, session) {
         "Admission Rate",
         "ACT Mid Point",
         "Average SAT (admitted students)",
-        "Tuition (In-State)",
-        "Tuition (Out of State)"
+        "Tuition (in-state)",
+        "Tuition (out-of-state)"
       )
     
     datatable(
@@ -243,7 +243,7 @@ shinyServer(function(input, output, session) {
       options = list(order = list(list(0, 'asc'), list(1, "asc")))
     )  %>%
       formatPercentage(c("Admission Rate"), digits = 0) %>%
-      formatCurrency(c("Tuition (In-State)", "Tuition (Out of State)"), digits = 0)
+      formatCurrency(c("Tuition (in-state)", "Tuition (out-of-state)"), digits = 0)
   }, server = T)
   
   
@@ -316,7 +316,7 @@ shinyServer(function(input, output, session) {
       Info
       
     } else
-      print("Please, select a University from the table below.")
+      print("Please select a university.")
   })
   
   
@@ -341,7 +341,7 @@ shinyServer(function(input, output, session) {
       ggplotly(p)
     }
     else {
-      ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
+      ggplotly(ggplot() + ggtitle("Please select a university."))
     }
   })
   
@@ -357,7 +357,7 @@ shinyServer(function(input, output, session) {
       ggplotly(b)
     }
     else  {
-      ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
+      ggplotly(ggplot() + ggtitle("Please select a university."))
     }
   })
   
@@ -374,7 +374,7 @@ shinyServer(function(input, output, session) {
       ggplotly(a)
     }
     else  {
-      ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
+      ggplotly(ggplot() + ggtitle("Please select a university."))
     }
   })
   
@@ -390,7 +390,7 @@ shinyServer(function(input, output, session) {
       ggplotly(d)
     }
     else  {
-      ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
+      ggplotly(ggplot() + ggtitle("Please select a university."))
     }
   })
   
@@ -406,7 +406,7 @@ shinyServer(function(input, output, session) {
       ggplotly(e)
     }
     else {
-      ggplotly(ggplot() + ggtitle("Please, select a University from the table below."))
+      ggplotly(ggplot() + ggtitle("Please select a university."))
     }
   })
  
