@@ -282,8 +282,8 @@ shinyServer(function(input, output, session) {
           "Median Debt: Students who have NOT completed",
           "Median Earnings: Students 10 years after entry")
       
-      Info <-list()
-      Info[[1]]<-data.frame(Basic)
+      Info <-c()
+      Info<-cbind(Info,Basic)
       for (i in 1:n){
         Institution<-c(sub[i,]$INSTNM ,
                        sub[i,]$INSTURL,
@@ -307,13 +307,15 @@ shinyServer(function(input, output, session) {
                        round(mean(
                          as.numeric(sub_2[i,]$MD_EARN_WNE_P10), na.rm = T
                        ), 0))
-        Info[[i+1]]<-data.frame(Institution)
+        Info<-cbind(Info,Institution)
       }
-      
-      
+      as.data.frame(Info)
+      Name<-Info[1,]
+      table_result<-Info[-1,]
+      colnames(table_result)<-Name
       #my.summary <- data.frame(cbind(Institution, Info))
       #my.summary
-      Info
+      table_result
       
     } else
       print("Please select a university.")
