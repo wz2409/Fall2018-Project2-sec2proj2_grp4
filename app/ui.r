@@ -124,15 +124,7 @@ navbarPage("Find your university!", id="nav",
            ),
            
            tabPanel(title = "Data Exploration",
-                    sidebarPanel(
-                      
-                      
-                      selectInput("universities.table", "Variables to show:",
-                                         c("SAT" = "SAT",
-                                           "ADM" = "ADM",
-                                           "FEM" = "FEM",
-                                           "ACT" = "ACT",
-                                           "ENR" = "ENR"))
+                   
                       # actionLink("selectall","Select All")
                       
      
@@ -146,27 +138,28 @@ navbarPage("Find your university!", id="nav",
                       # actionButton(inputId = "selectAllBottom",
                       #             label = "Select all",
                        #            icon = icon("check-square-o"))
-                    ),
+                  
                     mainPanel(
-                      tabsetPanel(
-                        # Data 
-                        #tabPanel(p(icon("table"), "Dataset"),
-                        #         dataTableOutput(outputId="dTable")
-                        #), # end of "Dataset" tab panel
-                        
-                        tabPanel(p(icon("line-chart"), "Visualize the Data"),
-                                 h4('Graphs', align = "center"),
-                                 plotlyOutput("SAT"),
-                                 plotlyOutput("ADM"),
-                                 plotlyOutput("FEM"),
-                                 plotlyOutput("ACT"),
-                                 plotlyOutput("ENR")
-                             
-                        ) # end of "Visualize the Data" tab panel
-                        
-                      )
-                      
-                    )
+                      fluidRow(
+                        column(6,
+                               p(icon("line-chart"), "Univeristy1"),
+                
+                               plotlyOutput("SAT_1"),
+                               plotlyOutput("ADM_1"),
+                               plotlyOutput("FEM_1"),
+                               plotlyOutput("ACT_1"),
+                               plotlyOutput("ENR_1")
+                        ),
+                        column(6,
+                               p(icon("line-chart"), "Univeristy2"),
+                               
+                               plotlyOutput("SAT_2"),
+                               plotlyOutput("ADM_2"),
+                               plotlyOutput("FEM_2"),
+                               plotlyOutput("ACT_2"),
+                               plotlyOutput("ENR_2")
+                        )
+                                      )
            ),         
            # tabPanel(title = "Admission Rate Trend", width = 12, solidHeader = T, plotlyOutput("ADM")),
            # tabPanel(title = "Average SAT Trend", width = 12, solidHeader = T, plotlyOutput("SAT")),
@@ -178,4 +171,4 @@ navbarPage("Find your university!", id="nav",
            conditionalPanel("false", icon("crosshair"))
         
           
-)
+))
