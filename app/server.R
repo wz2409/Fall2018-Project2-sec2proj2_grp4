@@ -311,14 +311,37 @@ shinyServer(function(input, output, session) {
       }
       as.data.frame(Info)
       Name<-Info[1,]
-      table_result<-Info[-1,]
+      table_result<-Info
       colnames(table_result)<-Name
       #my.summary <- data.frame(cbind(Institution, Info))
       #my.summary
-      table_result
+      #table_result
+      
+      
+      
+      datasetInput<-reactive({
+        switch(input$universities.table,
+               "All" = table_result[-1,],
+               "Website" = cbind(Name[-1],table_result[2,-1]),
+               "City" = cbind(Name[-1],table_result[3,-1]),
+               "Highest Degree" = cbind(Name[-1],table_result[4,-1]),
+               "Type of Institution" = cbind(Name[-1],table_result[5,-1]),
+               "Location" = cbind(Name[-1],table_result[6,-1]),
+               "Male %" = cbind(Name[-1],table_result[7,-1]),
+               "Female %" = cbind(Name[-1],table_result[8,-1]),
+               "Average age of entry" = cbind(Name[-1],table_result[9,-1]),
+               "% of Undergraduates aged 25+" = cbind(Name[-1],table_result[10,-1]),
+               "Undergraduate students receiving federal loan %" = cbind(Name[-1],table_result[11,-1]),
+               "Median Debt: Students who have completed" = cbind(Name[-1],table_result[12,-1]),
+               "Median Debt: Students who have NOT completed" = cbind(Name[-1],table_result[13,-1]),
+               "Median Earnings: Students 10 years after entry" = cbind(Name[-1],table_result[14,-1])
+        )})
+      
+      dataset<-datasetInput()
+      dataset
       
     } else
-      print("Please select a university.")
+      print("Please, select a University from the table below.")
   })
   
   

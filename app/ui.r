@@ -90,20 +90,38 @@ navbarPage("Find your university!", id="nav",
                     fluidRow(
                       
                       dataTableOutput("universities.table"),
-                      tags$style(type="text/css", '#myTable tfoot {display:none;}')), 
+                      #tags$style(type="text/css", '#myTable tfoot {display:none;}')), 
+                      
+                      
+                      
+                      hr()
+                      
+                    )),
                     
-                
-          
-                    hr()
-                    
-           ),
        
            tabPanel(title="Detailed Summary", width = 12, solidHeader = T, 
-                               fluidRow(
-                                 tableOutput("table.summary")
-                                 
-                                 
-                               )),
+                    fluidRow(
+                      sidebarPanel(
+                        selectInput("universities.table","Attribute to Select:",
+                                    c("All" = "All",
+                                      "Website" = "Website",
+                                      "City" = "City",
+                                      "Highest Degree" = "Highest Degree",
+                                      "Type of Institution" = "Type of Institution",
+                                      "Location" = "Location",
+                                      "Male %" = "Male %",
+                                      "Female %" = "Female %",
+                                      "Average age of entry" = "Average age of entry",
+                                      "% of Undergraduates aged 25+" = "% of Undergraduates aged 25+",
+                                      "Undergraduate students receiving federal loan %",
+                                      "Median Debt: Students who have completed" = "Median Debt: Students who have completed",
+                                      "Median Debt: Students who have NOT completed" = "Median Debt: Students who have NOT completed",
+                                      "Median Earnings: Students 10 years after entry" = "Median Earnings: Students 10 years after entry"))
+                      )),
+                    
+                    tableOutput("table.summary")
+                    #tags$style(type="text/css", '#myTable tfoot {display:none;}')
+           ),
            
            tabPanel(title = "Data Exploration",
                     sidebarPanel(
