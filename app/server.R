@@ -539,7 +539,7 @@ shinyServer(function(input, output, session) {
       edu$ADM_RATE = as.numeric(edu$ADM_RATE)
       edu$Year = as.numeric(edu$Year)
       p <-
-        ggplot(data = edu, aes(x = Year, y = ADM_RATE)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Admission Rate with Trending")
+        ggplot(data = edu, aes(x = Year, y = ADM_RATE)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Admission Rate Trends") +labs(x = "Year", y="Admission Rates")
       ggplotly(p)
     }
     else {
@@ -555,7 +555,7 @@ shinyServer(function(input, output, session) {
       edu$SAT_AVG = as.numeric(edu$SAT_AVG)
       edu$Year = as.numeric(edu$Year)
       b <-
-        ggplot(data = edu, aes(x = Year, y = SAT_AVG)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Average SAT with Trending")
+        ggplot(data = edu, aes(x = Year, y = SAT_AVG)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Average SAT Scores")+labs(x = "Year", y="SAT Scores")
       ggplotly(b)
     }
     else  {
@@ -572,29 +572,14 @@ shinyServer(function(input, output, session) {
       edu$ACTCMMID = as.numeric(edu$ACTCMMID)
       edu$Year = as.numeric(edu$Year)
       a <-
-        ggplot(data = edu, aes(x = Year, y = ACTCMMID)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year ACT MID with Trending")
+        ggplot(data = edu, aes(x = Year, y = ACTCMMID)) + geom_point() + geom_smooth(method = lm, color = "black") +ggtitle("Average ACT Scores")+labs(x = "Year", y="ACT Scores")
       ggplotly(a)
     }
     else  {
       ggplotly(ggplot() + ggtitle("Please select a university."))
     }
   })
-  
-  output$FEM_1 <- renderPlotly({
-    s = input$universities.table_rows_selected[1]
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$UGDS_WOMEN = as.numeric(edu$UGDS_WOMEN)
-      edu$Year = as.numeric(edu$Year)
-      d <-
-        ggplot(data = edu, aes(x = Year, y = UGDS_WOMEN)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Share of Female Undergrads with Trending")
-      ggplotly(d)
-    }
-    else  {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
-    }
-  })
+
   
   output$ENR_1 <- renderPlotly({
     s = input$universities.table_rows_selected[1]
@@ -604,7 +589,7 @@ shinyServer(function(input, output, session) {
       edu$UGDS = as.numeric(edu$UGDS)
       edu$Year = as.numeric(edu$Year)
       e <-
-        ggplot(data = edu, aes(x = Year, y = UGDS)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Enrollments with Trending")
+        ggplot(data = edu, aes(x = Year, y = UGDS)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Enrollment Trends")+labs(x = "Year", y="Admitted Undergrads")
       ggplotly(e)
     }
     else {
@@ -620,7 +605,7 @@ shinyServer(function(input, output, session) {
       edu$ADM_RATE = as.numeric(edu$ADM_RATE)
       edu$Year = as.numeric(edu$Year)
       p <-
-        ggplot(data = edu, aes(x = Year, y = ADM_RATE)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Admission Rate with Trending")
+        ggplot(data = edu, aes(x = Year, y = ADM_RATE)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Admission Rate Trends") +labs(x = "Year", y="Admission Rates")
       ggplotly(p)
     }
     else {
@@ -636,7 +621,7 @@ shinyServer(function(input, output, session) {
       edu$SAT_AVG = as.numeric(edu$SAT_AVG)
       edu$Year = as.numeric(edu$Year)
       b <-
-        ggplot(data = edu, aes(x = Year, y = SAT_AVG)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Average SAT with Trending")
+        ggplot(data = edu, aes(x = Year, y = SAT_AVG)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Average SAT Scores")+labs(x = "Year", y="SAT Scores")
       ggplotly(b)
     }
     else  {
@@ -653,7 +638,7 @@ shinyServer(function(input, output, session) {
       edu$ACTCMMID = as.numeric(edu$ACTCMMID)
       edu$Year = as.numeric(edu$Year)
       a <-
-        ggplot(data = edu, aes(x = Year, y = ACTCMMID)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year ACT MID with Trending")
+        ggplot(data = edu, aes(x = Year, y = ACTCMMID)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Average ACT Scores")+labs(x = "Year", y="ACT Scores")
       ggplotly(a)
     }
     else  {
@@ -661,21 +646,6 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  output$FEM_2 <- renderPlotly({
-    s = input$universities.table_rows_selected[2]
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$UGDS_WOMEN = as.numeric(edu$UGDS_WOMEN)
-      edu$Year = as.numeric(edu$Year)
-      d <-
-        ggplot(data = edu, aes(x = Year, y = UGDS_WOMEN)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Share of Female Undergrads with Trending")
-      ggplotly(d)
-    }
-    else  {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
-    }
-  })
   
   output$ENR_2 <- renderPlotly({
     s = input$universities.table_rows_selected[2]
@@ -685,7 +655,7 @@ shinyServer(function(input, output, session) {
       edu$UGDS = as.numeric(edu$UGDS)
       edu$Year = as.numeric(edu$Year)
       e <-
-        ggplot(data = edu, aes(x = Year, y = UGDS)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Enrollments with Trending")
+        ggplot(data = edu, aes(x = Year, y = UGDS)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Enrollment Trends")+labs(x = "Year", y="Admitted Undergrads")
       ggplotly(e)
     }
     else {

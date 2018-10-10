@@ -175,7 +175,6 @@ navbarPage("Find your university!", id="nav",
                 
                                plotlyOutput("SAT_1"),
                                plotlyOutput("ADM_1"),
-                               plotlyOutput("FEM_1"),
                                plotlyOutput("ACT_1"),
                                plotlyOutput("ENR_1")
                         ),
@@ -184,7 +183,6 @@ navbarPage("Find your university!", id="nav",
                               
                                plotlyOutput("SAT_2"),
                                plotlyOutput("ADM_2"),
-                               plotlyOutput("FEM_2"),
                                plotlyOutput("ACT_2"),
                                plotlyOutput("ENR_2")
                         )
