@@ -106,6 +106,11 @@ navbarPage("Find your university!", id="nav",
                       hr()
                       
                     )),
+           
+           tabPanel(title="Overall Comparison", width = 12, solidHeader = T,
+                    fluidRow(
+                      dataTableOutput("table.summary1")
+                    )),
                     
        
            tabPanel(title="Detailed Summary", width = 12, solidHeader = T,
