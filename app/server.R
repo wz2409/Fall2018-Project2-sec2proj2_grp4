@@ -349,7 +349,8 @@ shinyServer(function(input, output, session) {
   #------------------------------------------------------------------------------------------------------
 
 
-  
+  #output$Univeristy1 <- as.character(input$universities.table_rows_selected[1])
+  #output$Univeristy2 <- as.character(input$universities.table_rows_selected[2])
  
   
   #Graphical Analysis
@@ -541,7 +542,6 @@ shinyServer(function(input, output, session) {
   #                                        "ENR" = "ENR"))
   #  }
   #})
-  
 })
   
   

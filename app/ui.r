@@ -1,4 +1,4 @@
-packages.used=c("shiny", "plotly", "shinydashboard", "leaflet", "DT","BH","markdown","rCharts","data.table","dplyr")
+packages.used=c("shiny", "plotly", "shinydashboard", "leaflet", "DT","BH","markdown","rCharts","data.table","dplyr","shinydashboardPlus")
 
 # check packages that need to be installed.
 packages.needed=setdiff(packages.used, 
@@ -20,6 +20,7 @@ library(BH)
 require(markdown)
 require(data.table)
 library(dplyr)
+library(shinydashboardPlus)
 
 # Choices for drop-downs
 # Delete states without universities: AS, FM, GU, MH, MP, PR, PW
@@ -52,6 +53,7 @@ Major = c("-----",
 navbarPage("Find your university!", id="nav",
            
            tabPanel("Map",
+                    fluidRow(
                     div(class="outer",
                         
                         tags$head(
@@ -78,13 +80,20 @@ navbarPage("Find your university!", id="nav",
                                       selectInput("schtype", "Type of Institution", choices = c("-----","Public","Private nonprofit","Private for-profit")),
                                       selectInput("hdeg", "Highest Degree", choices = c("-----","Graduate","Bachelor","Associate","Certificate","Non-degree-granting"))
                                       
-                        )
+                        ),
                         
-                                
+                        absolutePanel(id = "controls", class="panel panel-default", fixed = FALSE,
+                                      draggable = TRUE, top = 100, left = "auto", right = 20, bottom = "auto",
+                                      width = 250, height = 250,
+                                      h2("Introduction"),
+                                      p(".....") 
+                                      
+                        )
+            
                                  
                         )
                     
-           ),
+           )),
            
            tabPanel("Ranking",
                     fluidRow(
@@ -152,15 +161,15 @@ navbarPage("Find your university!", id="nav",
                         ),
                         column(6,
                                p(icon("line-chart"), "Univeristy2"),
-                               
+                              
                                plotlyOutput("SAT_2"),
                                plotlyOutput("ADM_2"),
                                plotlyOutput("FEM_2"),
                                plotlyOutput("ACT_2"),
                                plotlyOutput("ENR_2")
                         )
-                                      )
-           ),         
+                   )
+           )),         
            # tabPanel(title = "Admission Rate Trend", width = 12, solidHeader = T, plotlyOutput("ADM")),
            # tabPanel(title = "Average SAT Trend", width = 12, solidHeader = T, plotlyOutput("SAT")),
            # tabPanel(title = "MID ACT Trend", width = 12, solidHeader = T, plotlyOutput("ACT")),
@@ -171,4 +180,4 @@ navbarPage("Find your university!", id="nav",
            conditionalPanel("false", icon("crosshair"))
         
           
-))
+)
