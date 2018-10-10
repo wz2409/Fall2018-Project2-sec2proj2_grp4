@@ -108,29 +108,44 @@ navbarPage("Find your university!", id="nav",
                     )),
                     
        
-           tabPanel(title="Detailed Summary", width = 12, solidHeader = T, 
-                    fluidRow(
-                      sidebarPanel(
-                        selectInput("universities.table","Attribute to Select:",
-                                    c("All" = "All",
-                                      "Website" = "Website",
-                                      "City" = "City",
-                                      "Highest Degree" = "Highest Degree",
-                                      "Type of Institution" = "Type of Institution",
-                                      "Location" = "Location",
-                                      "Male %" = "Male %",
-                                      "Female %" = "Female %",
-                                      "Average age of entry" = "Average age of entry",
-                                      "% of Undergraduates aged 25+" = "% of Undergraduates aged 25+",
-                                      "Undergraduate students receiving federal loan %",
-                                      "Median Debt: Students who have completed" = "Median Debt: Students who have completed",
-                                      "Median Debt: Students who have NOT completed" = "Median Debt: Students who have NOT completed",
-                                      "Median Earnings: Students 10 years after entry" = "Median Earnings: Students 10 years after entry"))
-                      )),
+           tabPanel(title="Detailed Summary", width = 12, solidHeader = T,
+                    sidebarPanel(
+                      selectInput("universities.table1","Attributes to Select:",
+                                  c("Website" = "Website",
+                                    "City" = "City",
+                                    "Highest Degree" = "Highest Degree",
+                                    "Type of Institution" = "Type of Institution",
+                                    "Location" = "Location"
+                                  )),
+                      
+                      hr(),
+                      hr(),
+                      hr(),
+                      
+                      selectInput("universities.table2", "Select an Attribute to Visulize:",
+                                  c(
+                                    "Male %" = "Male %",
+                                    "Female %" = "Female %",
+                                    "Average age of entry" = "Average age of entry",
+                                    "% of Undergraduates aged 25+" = "% of Undergraduates aged 25+",
+                                    "Undergraduate students receiving federal loan %",
+                                    "Median Debt: Students who have completed" = "Median Debt: Students who have completed",
+                                    "Median Debt: Students who have NOT completed" = "Median Debt: Students who have NOT completed",
+                                    "Median Earnings: Students 10 years after entry" = "Median Earnings: Students 10 years after entry",
+                                    "Tuition in state" = "Tuition in state",
+                                    "Tuition out state" = "Tuition out state"))),
                     
-                    tableOutput("table.summary")
-                    #tags$style(type="text/css", '#myTable tfoot {display:none;}')
-           ),
+                    mainPanel(
+                      
+                      tabsetPanel(
+                        tabPanel(p(icon("line-chart"),"Data Comparison"),
+                                 dataTableOutput("table.summary2")),
+                        tabPanel(p(icon("line-chart"),"Visulization"),
+                                 plotOutput("graph.summary3")
+                                 
+                                 
+                                 #tags$style(type="text/css", '#myTable tfoot {display:none;}')
+                        )))),
            
            tabPanel(title = "Data Exploration",
                    

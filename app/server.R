@@ -253,7 +253,83 @@ shinyServer(function(input, output, session) {
  
   #Selected indices--------------------------------------------------------------------------------------
   
-  output$table.summary = renderTable({
+  output$table.summary1 = DT::renderDataTable({
+    s = input$universities.table_rows_selected
+    #s = input$universities.table_row_last_clicked
+    if (length(s)) {
+      sub <- d5()[s, ]
+      n = length(s)
+      
+      university <- sub$INSTNM
+      sub_1 <- filter(fulldata, INSTNM == university)
+      
+      sub_2 <- filter(fulldata, INSTNM == university)
+      #sub_2[sub_2 == "NULL"] <- NA
+      
+      Basic <-
+        c("Name",
+          "Website",
+          "City",
+          "Highest Degree",
+          "Type of Institution",
+          "Location",
+          "Male %",
+          "Female %",
+          "Average age of entry",
+          "% of Undergraduates aged 25+",
+          "Undergraduate students receiving federal loan %",
+          "Median Debt: Students who have completed",
+          "Median Debt: Students who have NOT completed",
+          "Median Earnings: Students 10 years after entry",
+          "Tuition in state",
+          "Tuition out state")
+      
+      Info <-c()
+      Info<-cbind(Info,Basic)
+      for (i in 1:n){
+        Institution<-c(sub[i,]$INSTNM ,
+                       #sub[i,]$INSTURL,
+                       paste0(
+                         #as.character("<b><a href='http://"),
+                         as.character(sub[i,]$INSTURL)
+                         #"'>",
+                         #as.character(sub[i,]$INSTNM),
+                         #as.character("</a></b>")
+                       ),
+                       sub[i,]$CITY,
+                       sub[i,]$HIGHDEG,
+                       sub[i,]$CONTROL,
+                       sub[i,]$LOCALE,
+                       
+                       as.numeric(sub_1[i,]$UGDS_MEN) * 100,
+                       as.numeric(sub_1[i,]$UGDS_WOMEN) * 100,
+                       round(as.numeric(sub_1[i,]$AGE_ENTRY), digits = 2),
+                       as.numeric(sub_1[i,]$UG25ABV) * 100,
+                       
+                       round(as.numeric(sub_2[i,]$PCTFLOAN) * 100, 2),
+                       round(as.numeric(sub_2[i,]$GRAD_DEBT_MDN), 0),
+                       round(as.numeric(sub_2[i,]$WDRAW_DEBT_MDN), 0),
+                       round(as.numeric(sub_2[i,]$MD_EARN_WNE_P10), 0),
+                       as.numeric(sub_1[i,]$TUITIONFEE_IN),
+                       as.numeric(sub_1[i,]$TUITIONFEE_OUT))
+        Info<-cbind(Info,Institution)
+      }
+      as.data.frame(Info)
+      Name<-Info[1,]
+      table_result<-Info
+      colnames(table_result)<-Name
+      #my.summary <- data.frame(cbind(Institution, Info))
+      #my.summary
+      datatable(table_result[-1,])
+      
+    } else
+      datatable(d5()[s, ])
+  })
+  
+  
+  
+  
+  output$table.summary2 = DT::renderDataTable({
     s = input$universities.table_rows_selected
     #s = input$universities.table_row_last_clicked
     if (length(s)) {
@@ -277,10 +353,13 @@ shinyServer(function(input, output, session) {
           "Female %",
           "Average age of entry",
           "% of Undergraduates aged 25+",
+          
           "Undergraduate students receiving federal loan %",
           "Median Debt: Students who have completed",
           "Median Debt: Students who have NOT completed",
-          "Median Earnings: Students 10 years after entry")
+          "Median Earnings: Students 10 years after entry",
+          "Tuition in state",
+          "Tuition out state")
       
       Info <-c()
       Info<-cbind(Info,Basic)
@@ -297,19 +376,16 @@ shinyServer(function(input, output, session) {
                        round(as.numeric(sub_1[i,]$AGE_ENTRY), digits = 2),
                        as.numeric(sub_1[i,]$UG25ABV) * 100,
                        
-                       round(mean(as.numeric(sub_2[i,]$PCTFLOAN), na.rm = T) * 100, 2),
-                       round(mean(
-                         as.numeric(sub_2[i,]$GRAD_DEBT_MDN), na.rm = T
-                       ), 0),
-                       round(mean(
-                         as.numeric(sub_2[i,]$WDRAW_DEBT_MDN), na.rm = T
-                       ) * 100, 0),
-                       round(mean(
-                         as.numeric(sub_2[i,]$MD_EARN_WNE_P10), na.rm = T
-                       ), 0))
+                       
+                       round(as.numeric(sub_2[i,]$PCTFLOAN) * 100, 2),
+                       round(as.numeric(sub_2[i,]$GRAD_DEBT_MDN), 0),
+                       round(as.numeric(sub_2[i,]$WDRAW_DEBT_MDN), 0),
+                       round(as.numeric(sub_2[i,]$MD_EARN_WNE_P10), 0),
+                       as.numeric(sub_1[i,]$TUITIONFEE_IN),
+                       as.numeric(sub_1[i,]$TUITIONFEE_OUT))
         Info<-cbind(Info,Institution)
       }
-      as.data.frame(Info)
+      #as.data.frame(Info)
       Name<-Info[1,]
       table_result<-Info
       colnames(table_result)<-Name
@@ -319,9 +395,9 @@ shinyServer(function(input, output, session) {
       
       
       
-      datasetInput<-reactive({
-        switch(input$universities.table,
-               "All" = table_result[-1,],
+      datasetInput1<-reactive({
+        switch(input$universities.table1,
+               "Name" = cbind(Name[-1],table_result[1,-1]),
                "Website" = cbind(Name[-1],table_result[2,-1]),
                "City" = cbind(Name[-1],table_result[3,-1]),
                "Highest Degree" = cbind(Name[-1],table_result[4,-1]),
@@ -337,13 +413,113 @@ shinyServer(function(input, output, session) {
                "Median Earnings: Students 10 years after entry" = cbind(Name[-1],table_result[14,-1])
         )})
       
-      dataset<-datasetInput()
+      dataset<-datasetInput1()
+      colnames(dataset)<-c("Institution","Attribute")
       dataset
       
     } else
-      print("Please, select a University from the table below.")
+      datatable(d5()[s, ])
   })
   
+  
+  
+  output$graph.summary3 = renderPlot({
+    s = input$universities.table_rows_selected
+    #s = input$universities.table_row_last_clicked
+    if (length(s)) {
+      sub <- d5()[s, ]
+      n = length(s)
+      
+      university <- sub$INSTNM
+      sub_1 <- filter(fulldata, INSTNM == university)
+      
+      sub_2 <- filter(fulldata, INSTNM == university)
+      sub_2[sub_2 == "NULL"] <- NA
+      
+      Basic <-
+        c("Name",
+          "Website",
+          "City",
+          "Highest Degree",
+          "Type of Institution",
+          "Location",
+          "Male %",
+          "Female %",
+          "Average age of entry",
+          "% of Undergraduates aged 25+",
+          
+          "Undergraduate students receiving federal loan %",
+          "Median Debt: Students who have completed",
+          "Median Debt: Students who have NOT completed",
+          "Median Earnings: Students 10 years after entry",
+          "Tuition in state",
+          "Tuition out state")
+      
+      Info <-c()
+      Info<-cbind(Info,Basic)
+      for (i in 1:n){
+        Institution<-c(sub[i,]$INSTNM ,
+                       sub[i,]$INSTURL,
+                       sub[i,]$CITY,
+                       sub[i,]$HIGHDEG,
+                       sub[i,]$CONTROL,
+                       sub[i,]$LOCALE,
+                       
+                       as.numeric(sub_1[i,]$UGDS_MEN) * 100,
+                       as.numeric(sub_1[i,]$UGDS_WOMEN) * 100,
+                       round(as.numeric(sub_1[i,]$AGE_ENTRY), digits = 2),
+                       as.numeric(sub_1[i,]$UG25ABV) * 100,
+                       
+                       round(as.numeric(sub_2[i,]$PCTFLOAN) * 100, 2),
+                       round(as.numeric(sub_2[i,]$GRAD_DEBT_MDN), 0),
+                       round(as.numeric(sub_2[i,]$WDRAW_DEBT_MDN), 0),
+                       round(as.numeric(sub_2[i,]$MD_EARN_WNE_P10), 0),
+                       as.numeric(sub_1[i,]$TUITIONFEE_IN),
+                       as.numeric(sub_1[i,]$TUITIONFEE_OUT))
+        Info<-cbind(Info,Institution)
+      }
+      as.data.frame(Info)
+      Name<-Info[1,]
+      table_result<-Info
+      colnames(table_result)<-Name
+      
+      
+      
+      datasetInput2<-reactive({
+        switch(input$universities.table2,
+               #"Name" = cbind(Name[-1],table_result[1,-1]),
+               #"Website" = cbind(Name[-1],table_result[2,-1]),
+               #"City" = cbind(Name[-1],table_result[3,-1]),
+               #"Highest Degree" = cbind(Name[-1],table_result[4,-1]),
+               #"Type of Institution" = cbind(Name[-1],table_result[5,-1]),
+               #"Location" = cbind(Name[-1],table_result[6,-1]),
+               "Male %" = cbind(Name[-1],table_result[7,-1]),
+               "Female %" = cbind(Name[-1],table_result[8,-1]),
+               "Average age of entry" = cbind(Name[-1],table_result[9,-1]),
+               "% of Undergraduates aged 25+" = cbind(Name[-1],table_result[10,-1]),
+               "Undergraduate students receiving federal loan %" = cbind(Name[-1],table_result[11,-1]),
+               "Median Debt: Students who have completed" = cbind(Name[-1],table_result[12,-1]),
+               "Median Debt: Students who have NOT completed" = cbind(Name[-1],table_result[13,-1]),
+               "Median Earnings: Students 10 years after entry" = cbind(Name[-1],table_result[14,-1]),
+               "Tuition in state" = cbind(Name[-1],table_result[15,-1]),
+               "Tuition out state" = cbind(Name[-1],table_result[16,-1])
+        )})
+      
+      dataset1<-datasetInput2()
+      n<-nrow(dataset1)
+      v1<-c(1:n)
+      v2<-as.numeric(c(dataset1[,2]))
+      #dataset2<-data.frame(dataset1)
+      #colnames(dataset2)<-c("Institution","Attribute")
+      
+      #dataset2$Institution <-as.numeric(dataset2$Institution)
+      #dataset2$Attribute <-as.numeric(dataset2$Attribute)
+      plot(v1,v2,type = "h", xlab = "Instuitions", ylab = "Attribute")
+      
+    } else
+      ggplot(ggplot() + ggtitle("Please select a university."))
+    #datatable(d5()[s, ])
+  })
   
   
   #------------------------------------------------------------------------------------------------------
