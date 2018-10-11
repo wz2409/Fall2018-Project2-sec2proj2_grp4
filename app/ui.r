@@ -191,24 +191,9 @@ navbarPage("Find Your University!", id="nav",
            # tabPanel(title = "Total Enrollments Trend", width = 12, solidHeader = T, plotlyOutput("ENR")),         
        
            tabPanel("About us", id="about",
-                    fluidRow(
+                    fluidRow(top=200,align="center",
                       
-                      absolutePanel(id = "controls", class="panel panel-default", fixed = TRUE,
-                                    draggable = FALSE, top = 300, left = 300, right = 300, bottom =300,
-                                    
-                                    h3("About us",align="center"),
-                                    br(),
-                                    p("Our goal is to help prospect college students find their ideal college match."),
-                                    br(),
-                                    p("Whether you have an idea of where you want to go or have no idea of where to start, Find Your University is the right tool for you."),
-                                    br(),
-                                    p("Our app allows you to compare admission stats, tuition costs, ranks, and campus information in one place, saving you time so you can focus on your application."),
-                                    br(),
-                                    p("You can go to our Map and select an area of interest and select your dream school directly or you can explore different colleges from our ranking tab.")
-                                    
-                                    
-                                    
-                      )
+                      HTML('<p><img src="aboutus.png" style="width:800px;height:600px align="middle"></p>')
                       
                       
                     )),
