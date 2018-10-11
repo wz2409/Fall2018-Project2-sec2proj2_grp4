@@ -3,8 +3,8 @@
 This file is a note on contributions of team members. All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. A detailed breakdown of their contributions is listed below.
 
 + **Alcantara, Zuleimy**
-PowerPoint presentation 
-Commenting the code.
+Read Me,  "About Us" content, PowerPoint
+Commenting/cleaning  the code.
 
 + **Gao, Han**
 "Map"Tab: Map improvement, eg. icons, zoom in when select a state
@@ -17,7 +17,7 @@ Errors fixed on github
 
 + **Mu, Jay**
 "Overall Comparison"Tab: Table construct
-"Detailed Summary"Tab: Tabes construct and plots construct.
+"Detailed Summary"Tab: Tables construct and plots construct.
 
 
 + **Zheng, Wanyi**
