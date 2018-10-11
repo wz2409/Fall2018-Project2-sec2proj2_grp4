@@ -81,14 +81,6 @@ navbarPage("Find Your University!", id="nav",
                                       selectInput("schtype", "Type of Institution", choices = c("-----","Public","Private nonprofit","Private for-profit")),
                                       selectInput("hdeg", "Highest Degree", choices = c("-----","Graduate","Bachelor","Associate","Certificate","Non-degree-granting"))
                                       
-                        ),
-                        
-                        absolutePanel(id = "controls", class="panel panel-default", fixed = FALSE,
-                                      draggable = TRUE, top = 100, left = "auto", right = 20, bottom = "auto",
-                                      width = 250, height = 250,
-                                      h2("Introduction"),
-                                      p(".....") 
-                                      
                         )
                         )
                     
