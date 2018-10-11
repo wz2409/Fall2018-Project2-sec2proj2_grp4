@@ -22,5 +22,5 @@ Errors fixed on github
 
 
 + **Zheng, Wanyi**
-Overall tab theme change, eg. background image, and Readme 
+Overall tabs theme change, background image adding, panel adjustments, and Readme file added; 
 "Data Exploration" Tab: Side bar and main tab construct.
