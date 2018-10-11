@@ -195,10 +195,17 @@ navbarPage("Find Your University!", id="nav",
                     fluidRow(
                       
                       absolutePanel(id = "controls", class="panel panel-default", fixed = TRUE,
-                                    draggable = FALSE, top = 150, left = 100, right = 100, bottom =100,
+                                    draggable = FALSE, top = 300, left = 300, right = 300, bottom =300,
                                     
-                                    
-                                    h5("Our goal is to help prospect college student find their ideal college match.   Whether you have an idea or where you want to go or have no idea of where to start, Find Your University is the right tool for you.  Our app allows you to compare admission stats, tuition costs, ranks, and campus information in one place, saving you time so you can focus on your application.  You can go to our Map and select an area of interest and select your dream school directly or you can explore different colleges from our ranking tab.", align = "center")
+                                    h3("About us",align="center"),
+                                    br(),
+                                    p("Our goal is to help prospect college student find their ideal college match."),
+                                    br(),
+                                    p("Whether you have an idea of where you want to go or have no idea of where to start, Find Your University is the right tool for you."),
+                                    br(),
+                                    p("Our app allows you to compare admission stats, tuition costs, ranks, and campus information in one place, saving you time so you can focus on your application."),
+                                    br(),
+                                    p("You can go to our Map and select an area of interest and select your dream school directly or you can explore different colleges from our ranking tab.")
                                     
                                     
                                     
