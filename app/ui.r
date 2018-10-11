@@ -53,9 +53,7 @@ Major = c("-----",
 
 navbarPage("Find Your University!", id="nav",
            
-           setBackgroundImage(src="CU.jpg"),
-           
-           tabPanel("Map",
+           tabPanel("Map",setBackgroundImage(src="CU.jpg"),
                     fluidRow(
                     div(class="outer",
                         
@@ -82,14 +80,6 @@ navbarPage("Find Your University!", id="nav",
                                       selectInput("city", "Location", choices = c("-----","City","Suburb","Town","Rural")),
                                       selectInput("schtype", "Type of Institution", choices = c("-----","Public","Private nonprofit","Private for-profit")),
                                       selectInput("hdeg", "Highest Degree", choices = c("-----","Graduate","Bachelor","Associate","Certificate","Non-degree-granting"))
-                                      
-                        ),
-                        
-                        absolutePanel(id = "controls", class="panel panel-default", fixed = FALSE,
-                                      draggable = TRUE, top = 100, left = "auto", right = 20, bottom = "auto",
-                                      width = 250, height = 250,
-                                      h2("Introduction"),
-                                      p(".....") 
                                       
                         )
                         )
@@ -201,6 +191,21 @@ navbarPage("Find Your University!", id="nav",
            # tabPanel(title = "Share of Female Students Trend", width = 12, solidHeader = T, plotlyOutput("FEM")),
            # tabPanel(title = "Total Enrollments Trend", width = 12, solidHeader = T, plotlyOutput("ENR")),         
        
+           tabPanel("About us", id="about",
+                    fluidRow(
+                      
+                      absolutePanel(id = "controls", class="panel panel-default", fixed = TRUE,
+                                    draggable = FALSE, top = 150, left = 100, right = 100, bottom =100,
+                                    
+                                    
+                                    h5("Our goal is to help prospect college student find their ideal college match.   Whether you have an idea or where you want to go or have no idea of where to start, Find Your University is the right tool for you.  Our app allows you to compare admission stats, tuition costs, ranks, and campus information in one place, saving you time so you can focus on your application.  You can go to our Map and select an area of interest and select your dream school directly or you can explore different colleges from our ranking tab.", align = "center")
+                                    
+                                    
+                                    
+                      )
+                      
+                      
+                    )),
            
            conditionalPanel("false", icon("crosshair"))
         
