@@ -556,7 +556,6 @@ output$graph1<- renderPlot({
       edu_1$ADM_RATE = as.numeric(edu_1$ADM_RATE)
       edu_1$SAT_AVG = as.numeric(edu_1$SAT_AVG)
       edu_1$ACTCMMID = as.numeric(edu_1$ACTCMMID)
-      edu_1$UGDS_WOMEN = as.numeric(edu_1$UGDS_WOMEN)
       edu_1$UGDS = as.numeric(edu_1$UGDS)
       
       university2 <- d5()$INSTNM[x]
@@ -567,7 +566,6 @@ output$graph1<- renderPlot({
       edu_2$ADM_RATE = as.numeric(edu_2$ADM_RATE)
       edu_2$SAT_AVG = as.numeric(edu_2$SAT_AVG)
       edu_2$ACTCMMID = as.numeric(edu_2$ACTCMMID)
-      edu_2$UGDS_WOMEN = as.numeric(edu_2$UGDS_WOMEN)
       edu_2$UGDS = as.numeric(edu_2$UGDS)   
       
       dataInput<-reactive({
@@ -576,7 +574,6 @@ output$graph1<- renderPlot({
                "ADM" = edu_1[,c("ADM_RATE","Year")],#,edu_2[,c("ADM_RATE","Year")]),
                "SAT" = edu_1[,c("SAT_AVG","Year")],#,edu_2[,c("SAT_AVG","Year")]),
                "ACT" = edu_1[,c("ACTCMMID","Year")],#,edu_2[,c("ACTCMMID","Year")]),
-               "UGDS_WOMEN" = edu_2[,c("UGDS_WOMEN","Year")],#,edu_2[,c("UGDS_WOMEN","Year")]),
                "UGDS" = edu_1[,c("UGDS","Year")]#,edu_2[,c("UGDS","Year")])
                
         )
@@ -587,7 +584,7 @@ output$graph1<- renderPlot({
       as.data.frame(mydata)
       #plot(mydata[,2],mydata[,1])}
     #Name<-colnames(mydata[[1]])[1]
-    ggplot(data = mydata, aes(x = Year, y = Attribute)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Trending")
+    ggplot(data = mydata, aes(x = Year, y = Attribute)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Trends")
     }
     
     else {
@@ -609,7 +606,6 @@ output$graph2<- renderPlot({
       edu_1$ADM_RATE = as.numeric(edu_1$ADM_RATE)
       edu_1$SAT_AVG = as.numeric(edu_1$SAT_AVG)
       edu_1$ACTCMMID = as.numeric(edu_1$ACTCMMID)
-      edu_1$UGDS_WOMEN = as.numeric(edu_1$UGDS_WOMEN)
       edu_1$UGDS = as.numeric(edu_1$UGDS)
       
       university2 <- d5()$INSTNM[x]
@@ -620,7 +616,6 @@ output$graph2<- renderPlot({
       edu_2$ADM_RATE = as.numeric(edu_2$ADM_RATE)
       edu_2$SAT_AVG = as.numeric(edu_2$SAT_AVG)
       edu_2$ACTCMMID = as.numeric(edu_2$ACTCMMID)
-      edu_2$UGDS_WOMEN = as.numeric(edu_2$UGDS_WOMEN)
       edu_2$UGDS = as.numeric(edu_2$UGDS)   
       
       dataInput<-reactive({
@@ -629,7 +624,6 @@ output$graph2<- renderPlot({
                "ADM" = edu_2[,c("ADM_RATE","Year")],#,edu_2[,c("ADM_RATE","Year")]),
                "SAT" = edu_2[,c("SAT_AVG","Year")],#,edu_2[,c("SAT_AVG","Year")]),
                "ACT" = edu_2[,c("ACTCMMID","Year")],#,edu_2[,c("ACTCMMID","Year")]),
-               "UGDS_WOMEN" = edu_2[,c("UGDS_WOMEN","Year")],#,edu_2[,c("UGDS_WOMEN","Year")]),
                "UGDS" = edu_2[,c("UGDS","Year")]#,edu_2[,c("UGDS","Year")])
                
         )
@@ -640,7 +634,7 @@ output$graph2<- renderPlot({
       as.data.frame(mydata)
       #plot(mydata[,2],mydata[,1])}
       #Name<-colnames(mydata[[1]])[1]
-      ggplot(data = mydata, aes(x = Year, y = Attribute)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Trending")
+      ggplot(data = mydata, aes(x = Year, y = Attribute)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Trends")
       
     }
     
