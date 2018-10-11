@@ -20,7 +20,7 @@ Term: Spring 2018
 + **Team Members**
 	+ Alcantara, Zuleimy zga2102@columbia.edu
 	+ Gao, Han h.gao@columbia.edu
-	+ Guo, Yaoqi yq2542@columbia.edu
+	+ Guo, Yaoqi yg2542@columbia.edu
 	+ Mu, Jay jm4610@columbia.edu
 	+ Zheng, Wanyi wz2409@columbia.edu
 
