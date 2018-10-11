@@ -523,7 +523,8 @@ shinyServer(function(input, output, session) {
       #pie3D(mydata$FR, labels = mydata$group, main = "An exploded 3D pie chart", explode=0.1, radius=.9, labelcex = 1.2,  start=0.7)
       ggplot(mydata, aes(Institution, Statistic)) +
         theme(panel.background = element_rect(fill = "white"),plot.title = element_text(colour = "black", size = 16, vjust = 1),plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "inches")) +
-        geom_bar(aes(fill = Institution), position = "dodge", stat="identity")+
+        geom_text(aes(label = Statistic, vjust = -0.8, hjust = 0.5), show_guide = FALSE) +
+        geom_bar(aes(fill = Institution), position = "dodge", stat="identity",width = 0.9)+
         ggtitle("Bar Plot of Selected Countries")
       
     } else
