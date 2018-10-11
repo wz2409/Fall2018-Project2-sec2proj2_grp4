@@ -24,7 +24,7 @@ Term: Spring 2018
 
 + **Project summary**: In this second project of GR5243 Applied Data Science, we develop a version 2.0 of an *Exploratory Data Analysis and Visualization* shiny app and our chosen topic is [college scorecard](https://collegescorecard.ed.gov/data/). Find Your University 2.0 recommends colleges for prospective college students and is an update and expansion of [a previous project](https://github.com/TZstatsADS/Fall2017-project2-grp9) from the same class in Fall 2017.
 
-+ **Link: TBA**
++ **Link: [a link](https://han-gao.shinyapps.io/FindYourUniversity/)**
 
 + **Contribution statement**: [see here](doc/a_note_on_contributions.md)
 
