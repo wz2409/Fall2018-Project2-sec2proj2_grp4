@@ -13,8 +13,10 @@ Web app management on shinyapps.io.
 
 
 + **Guo, Yaoqi**
-Readme summary and PowerPoint
-Errors fixed on github
+"Map" and "Summary" Tabs: clean the urls in the dataset
+GitHub: give tutorial on GitHub and set up and update [Project](https://github.com/TZstatsADS/Fall2018-Project2-sec2proj2_grp4/projects/1) (a board of to-do lists to keep track of tasks)
+Readme.md: update content
+Presentation: make and update PowerPoint
 
 + **Mu, Jay**
 "Overall Comparison"Tab: Table construct, multiple-selection related feature, PowerPoint
