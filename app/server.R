@@ -415,10 +415,10 @@ shinyServer(function(input, output, session) {
       
       dataset<-datasetInput1()
       colnames(dataset)<-c("Institution","Attribute")
-      dataset
+      datatable(dataset,options = list(paging = FALSE, searching = FALSE,ordering = FALSE))
       
     } else
-      datatable(d5()[s, ])
+      datatable(d5()[s, ],options = list(paging = FALSE, searching = FALSE,ordering = FALSE))
   })
   
   
