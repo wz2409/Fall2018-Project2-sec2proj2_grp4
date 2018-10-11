@@ -48,7 +48,7 @@ Overall we changed labels to more user-friendly titles.  We changed the ordering
    - https://wonder.cdc.gov/wonder
    - https://www.forbes.com/sites/nataliesportelli/2016/07/06/the-full-list-of-americas-top-colleges-2016/#191c50d569a4
 
-+ **Link: [URL of Shiny App](https://han-gao.shinyapps.io/FindYourUniversity/)**
++ **Link: [URL of Shiny App; ](https://han-gao.shinyapps.io/FindYourUniversity/) [Presentation](https://docs.google.com/presentation/d/16SUNrmYzo1jN8pnKvO0QCS9X_YqaipJGoy5Kaxis9Yk/edit?usp=sharing)**
 
 + **Contribution statement**: [see here](doc/a_note_on_contributions.md)
 
