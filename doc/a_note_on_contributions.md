@@ -7,8 +7,9 @@ Readme,  "About Us" content, PowerPoint
 Commenting/cleaning the code.
 
 + **Gao, Han**
-"Map"Tab: Map improvement, eg. icons, zoom in when select a state
-"About us" Tab: Layout and Font.
+"Map"Tab: Map improvement, eg. icons, zoom, clustering, popup and other features.
+"About us" Tab: Layout design and Font
+Web app management on shinyapps.io.
 
 
 + **Guo, Yaoqi**
@@ -16,7 +17,7 @@ Readme summary and PowerPoint
 Errors fixed on github
 
 + **Mu, Jay**
-"Overall Comparison"Tab: Table construct, PowerPoint
+"Overall Comparison"Tab: Table construct, multiple-selection related feature, PowerPoint
 "Detailed Summary"Tab: Tables construct and plots construct.
 
 
