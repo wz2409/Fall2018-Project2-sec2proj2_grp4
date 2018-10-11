@@ -320,7 +320,7 @@ shinyServer(function(input, output, session) {
       colnames(table_result)<-Name
       #my.summary <- data.frame(cbind(Institution, Info))
       #my.summary
-      datatable(table_result[-1,],options = list(paging = FALSE,ordering = FALSE))
+      datatable(table_result[-1,],options = list(paging = FALSE,ordering = FALSE,searching = FALSE))
       
     } else
       datatable(d5()[s, ])
