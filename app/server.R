@@ -542,194 +542,115 @@ shinyServer(function(input, output, session) {
   
   #Graphical Analysis
   
-  output$ADM_1 <- renderPlotly({
+output$graph1<- renderPlot({
     s = input$universities.table_rows_selected[1]
+    x = input$universities.table_rows_selected[2]
+    
     if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$ADM_RATE = as.numeric(edu$ADM_RATE)
-      edu$Year = as.numeric(edu$Year)
-      p <-
-        ggplot(data = edu, aes(x = Year, y = ADM_RATE)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Admission Rate with Trending")
-      ggplotly(p)
+      
+      university1 <- d5()$INSTNM[s]
+      edu_1 <- filter(fulldata, INSTNM == university1)
+      #edu_1$INSTNM
+      edu_1$Year = as.numeric(edu_1$Year)
+      
+      edu_1$ADM_RATE = as.numeric(edu_1$ADM_RATE)
+      edu_1$SAT_AVG = as.numeric(edu_1$SAT_AVG)
+      edu_1$ACTCMMID = as.numeric(edu_1$ACTCMMID)
+      edu_1$UGDS_WOMEN = as.numeric(edu_1$UGDS_WOMEN)
+      edu_1$UGDS = as.numeric(edu_1$UGDS)
+      
+      university2 <- d5()$INSTNM[x]
+      edu_2 <- filter(fulldata, INSTNM == university2)
+      #edu_2$INSTNM
+      edu_2$Year = as.numeric(edu_2$Year)
+      
+      edu_2$ADM_RATE = as.numeric(edu_2$ADM_RATE)
+      edu_2$SAT_AVG = as.numeric(edu_2$SAT_AVG)
+      edu_2$ACTCMMID = as.numeric(edu_2$ACTCMMID)
+      edu_2$UGDS_WOMEN = as.numeric(edu_2$UGDS_WOMEN)
+      edu_2$UGDS = as.numeric(edu_2$UGDS)   
+      
+      dataInput<-reactive({
+        switch(input$universities.table4,
+               #"Year" = list(edu_1$Year,edu_2$Year)
+               "ADM" = edu_1[,c("ADM_RATE","Year")],#,edu_2[,c("ADM_RATE","Year")]),
+               "SAT" = edu_1[,c("SAT_AVG","Year")],#,edu_2[,c("SAT_AVG","Year")]),
+               "ACT" = edu_1[,c("ACTCMMID","Year")],#,edu_2[,c("ACTCMMID","Year")]),
+               "UGDS_WOMEN" = edu_2[,c("UGDS_WOMEN","Year")],#,edu_2[,c("UGDS_WOMEN","Year")]),
+               "UGDS" = edu_1[,c("UGDS","Year")]#,edu_2[,c("UGDS","Year")])
+               
+        )
+      })
+      
+      mydata<-dataInput()
+      colnames(mydata)<-c("Attribute","Year")
+      as.data.frame(mydata)
+      #plot(mydata[,2],mydata[,1])}
+    #Name<-colnames(mydata[[1]])[1]
+    ggplot(data = mydata, aes(x = Year, y = Attribute)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Trending")
     }
+    
     else {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
+      ggplot() + ggtitle("Please select a university.")
     }
-  })
+})
   
-  output$SAT_1 <- renderPlotly({
+output$graph2<- renderPlot({
     s = input$universities.table_rows_selected[1]
+    x = input$universities.table_rows_selected[2]
+    
     if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$SAT_AVG = as.numeric(edu$SAT_AVG)
-      edu$Year = as.numeric(edu$Year)
-      b <-
-        ggplot(data = edu, aes(x = Year, y = SAT_AVG)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Average SAT with Trending")
-      ggplotly(b)
+      
+      university1 <- d5()$INSTNM[s]
+      edu_1 <- filter(fulldata, INSTNM == university1)
+      #edu_1$INSTNM
+      edu_1$Year = as.numeric(edu_1$Year)
+      
+      edu_1$ADM_RATE = as.numeric(edu_1$ADM_RATE)
+      edu_1$SAT_AVG = as.numeric(edu_1$SAT_AVG)
+      edu_1$ACTCMMID = as.numeric(edu_1$ACTCMMID)
+      edu_1$UGDS_WOMEN = as.numeric(edu_1$UGDS_WOMEN)
+      edu_1$UGDS = as.numeric(edu_1$UGDS)
+      
+      university2 <- d5()$INSTNM[x]
+      edu_2 <- filter(fulldata, INSTNM == university2)
+      #edu_2$INSTNM
+      edu_2$Year = as.numeric(edu_2$Year)
+      
+      edu_2$ADM_RATE = as.numeric(edu_2$ADM_RATE)
+      edu_2$SAT_AVG = as.numeric(edu_2$SAT_AVG)
+      edu_2$ACTCMMID = as.numeric(edu_2$ACTCMMID)
+      edu_2$UGDS_WOMEN = as.numeric(edu_2$UGDS_WOMEN)
+      edu_2$UGDS = as.numeric(edu_2$UGDS)   
+      
+      dataInput<-reactive({
+        switch(input$universities.table4,
+               #"Year" = list(edu_1$Year,edu_2$Year)
+               "ADM" = edu_2[,c("ADM_RATE","Year")],#,edu_2[,c("ADM_RATE","Year")]),
+               "SAT" = edu_2[,c("SAT_AVG","Year")],#,edu_2[,c("SAT_AVG","Year")]),
+               "ACT" = edu_2[,c("ACTCMMID","Year")],#,edu_2[,c("ACTCMMID","Year")]),
+               "UGDS_WOMEN" = edu_2[,c("UGDS_WOMEN","Year")],#,edu_2[,c("UGDS_WOMEN","Year")]),
+               "UGDS" = edu_2[,c("UGDS","Year")]#,edu_2[,c("UGDS","Year")])
+               
+        )
+      })
+      
+      mydata<-dataInput()
+      colnames(mydata)<-c("Attribute","Year")
+      as.data.frame(mydata)
+      #plot(mydata[,2],mydata[,1])}
+      #Name<-colnames(mydata[[1]])[1]
+      ggplot(data = mydata, aes(x = Year, y = Attribute)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Trending")
+      
     }
-    else  {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
-    }
-  })
-  
-  
-  output$ACT_1 <- renderPlotly({
-    s = input$universities.table_rows_selected[1]
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$ACTCMMID = as.numeric(edu$ACTCMMID)
-      edu$Year = as.numeric(edu$Year)
-      a <-
-        ggplot(data = edu, aes(x = Year, y = ACTCMMID)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year ACT MID with Trending")
-      ggplotly(a)
-    }
-    else  {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
-    }
-  })
-  
-  output$FEM_1 <- renderPlotly({
-    s = input$universities.table_rows_selected[1]
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$UGDS_WOMEN = as.numeric(edu$UGDS_WOMEN)
-      edu$Year = as.numeric(edu$Year)
-      d <-
-        ggplot(data = edu, aes(x = Year, y = UGDS_WOMEN)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Share of Female Undergrads with Trending")
-      ggplotly(d)
-    }
-    else  {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
-    }
-  })
-  
-  output$ENR_1 <- renderPlotly({
-    s = input$universities.table_rows_selected[1]
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$UGDS = as.numeric(edu$UGDS)
-      edu$Year = as.numeric(edu$Year)
-      e <-
-        ggplot(data = edu, aes(x = Year, y = UGDS)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Enrollments with Trending")
-      ggplotly(e)
-    }
+    
     else {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
+      ggplot() + ggtitle("Please select a university.")
     }
-  })
-  
-  output$ADM_2 <- renderPlotly({
-    s = input$universities.table_rows_selected[2]
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$ADM_RATE = as.numeric(edu$ADM_RATE)
-      edu$Year = as.numeric(edu$Year)
-      p <-
-        ggplot(data = edu, aes(x = Year, y = ADM_RATE)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Admission Rate with Trending")
-      ggplotly(p)
-    }
-    else {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
-    }
-  })
-  
-  output$SAT_2 <- renderPlotly({
-    s = input$universities.table_rows_selected[2]
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$SAT_AVG = as.numeric(edu$SAT_AVG)
-      edu$Year = as.numeric(edu$Year)
-      b <-
-        ggplot(data = edu, aes(x = Year, y = SAT_AVG)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Average SAT with Trending")
-      ggplotly(b)
-    }
-    else  {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
-    }
-  })
+})
   
   
-  output$ACT_2 <- renderPlotly({
-    s = input$universities.table_rows_selected[2]
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$ACTCMMID = as.numeric(edu$ACTCMMID)
-      edu$Year = as.numeric(edu$Year)
-      a <-
-        ggplot(data = edu, aes(x = Year, y = ACTCMMID)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year ACT MID with Trending")
-      ggplotly(a)
-    }
-    else  {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
-    }
-  })
   
-  output$FEM_2 <- renderPlotly({
-    s = input$universities.table_rows_selected[2]
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$UGDS_WOMEN = as.numeric(edu$UGDS_WOMEN)
-      edu$Year = as.numeric(edu$Year)
-      d <-
-        ggplot(data = edu, aes(x = Year, y = UGDS_WOMEN)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Share of Female Undergrads with Trending")
-      ggplotly(d)
-    }
-    else  {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
-    }
-  })
-  
-  output$ENR_2 <- renderPlotly({
-    s = input$universities.table_rows_selected[2]
-    if (length(s)) {
-      university <- d5()$INSTNM[s]
-      edu <- filter(fulldata, INSTNM == university)
-      edu$UGDS = as.numeric(edu$UGDS)
-      edu$Year = as.numeric(edu$Year)
-      e <-
-        ggplot(data = edu, aes(x = Year, y = UGDS)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("10-Year Enrollments with Trending")
-      ggplotly(e)
-    }
-    else {
-      ggplotly(ggplot() + ggtitle("Please select a university."))
-    }
-  })
- 
-  # observe({
-  #  if(input$selectall == 0) return(NULL) 
-  #  else if (input$selectall%%2 == 0)
-  #  {
-  #    updateCheckboxGroupInput(session,"universities.table", "Variables to show:",
-  #                             c("SAT" = "SAT",
-  #                               "ADM" = "ADM",
-  #                               "FEM" = "FEM",
-  #                               "ACT" = "ACT",
-  #                               "ENR" = "ENR"))
-  #  }
-  #  else
-  #  {
-  #    updateCheckboxGroupInput(session,"universities.table", "Variables to show:",choices=c("SAT" = "SAT",
-  #                                                                                          "ADM" = "ADM",
-  #                                                                                          "FEM" = "FEM",
-  #                                                                                          "ACT" = "ACT",
-  #                                                                                          "ENR" = "ENR"),
-  #                             selected=c("SAT" = "SAT",
-  #                                        "ADM" = "ADM",
-  #                                        "FEM" = "FEM",
-  #                                        "ACT" = "ACT",
-  #                                        "ENR" = "ENR"))
-  #  }
-  #})
-
 
 })
   

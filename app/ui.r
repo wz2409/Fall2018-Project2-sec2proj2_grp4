@@ -156,12 +156,12 @@ navbarPage("Find Your University!", id="nav",
            
            tabPanel(title = "Data Exploration",
                     sidebarPanel(
-                      selectInput("universities.table", "Variables to show:",
-                                                           c("SAT_1" = "SAT_1",
-                                                            "ADM_1" = "ADM_1",
-                                                            "FEM_1" = "FEM_1",
-                                                            "ACT_1" = "ACT_1",
-                                                            "ENR_1" = "ENR_1"))),
+                      selectInput("universities.table4", "Variables to show:",
+                                                           c("ADM" = "ADM",
+                                                             "SAT" = "SAT",
+                                                             "ACT" = "ACT",
+                                                             "UGDS_WOMEN" = "UGDS_WOMEN",
+                                                             "UGDS" = "UGDS"))),
                       # actionLink("selectall","Select All")
 
                       #format = "####"),
@@ -178,20 +178,20 @@ navbarPage("Find Your University!", id="nav",
                         column(6,
                                p(icon("line-chart"), "Univeristy1"),
                 
-                               plotlyOutput("SAT_1"),
-                               plotlyOutput("ADM_1"),
-                               plotlyOutput("FEM_1"),
-                               plotlyOutput("ACT_1"),
-                               plotlyOutput("ENR_1")
+                               #plotlyOutput("SAT_1"),
+                               #plotlyOutput("ADM_1"),
+                               #plotlyOutput("FEM_1"),
+                               #plotlyOutput("ACT_1"),
+                               plotOutput("graph1")
                         ),
                         column(6,
                                p(icon("line-chart"), "Univeristy2"),
                               
-                               plotlyOutput("SAT_2"),
-                               plotlyOutput("ADM_2"),
-                               plotlyOutput("FEM_2"),
-                               plotlyOutput("ACT_2"),
-                               plotlyOutput("ENR_2")
+                               #plotlyOutput("SAT_2"),
+                               #plotlyOutput("ADM_2"),
+                               #plotlyOutput("FEM_2"),
+                               #plotlyOutput("ACT_2"),
+                               plotOutput("graph2")
                         )
                    )
            )),         
