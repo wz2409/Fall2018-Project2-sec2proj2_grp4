@@ -509,7 +509,7 @@ shinyServer(function(input, output, session) {
       n<-nrow(dataset1)
       v1<-as.character(c(dataset1[c(2:n),1]))
       v2<-as.numeric(c(dataset1[c(2:n),2]))
-      mydata<-data.frame(Institution = v1, Detail = v2)
+      mydata<-data.frame(Institution = v1, Statistic = v2)
       #mydata1<-melt(mydata,id.vars = "group")
       #dataset2<-data.frame(cbind(v1,v2))
       
@@ -521,14 +521,14 @@ shinyServer(function(input, output, session) {
       #p1<- ggplot(mydata,aes(x=factor(1),y = FR, fill = factor(group)))+geom_bar(width = 1,stat = "identity")+coord_polar(theta = "y")
       #
       #pie3D(mydata$FR, labels = mydata$group, main = "An exploded 3D pie chart", explode=0.1, radius=.9, labelcex = 1.2,  start=0.7)
-      ggplot(mydata, aes(Institution, Detail)) +
-        theme(panel.background = element_rect(fill = "lightblue"),plot.title = element_text(colour = "black", face = "bold", size = 30, vjust = 1),plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "inches")) +
+      ggplot(mydata, aes(Institution, Statistic)) +
+        theme(panel.background = element_rect(fill = "white"),plot.title = element_text(colour = "black", size = 16, vjust = 1),plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "inches")) +
         geom_bar(aes(fill = Institution), position = "dodge", stat="identity")+
         ggtitle("Bar Plot of Selected Countries")
       
     } else
       ggplot() + ggtitle("Please select a university.")+
-      theme(panel.background = element_rect(fill = "lightblue"),plot.title = element_text(colour = "black", face = "bold", size = 30, vjust = 1),plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "inches"))
+      theme(panel.background = element_rect(fill = "white"),plot.title = element_text(colour = "black", size = 16, vjust = 1),plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "inches"))
     #datatable(d5()[s, ])
   })
   
