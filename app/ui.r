@@ -1,4 +1,4 @@
-packages.used=c("shiny", "plotly", "shinydashboard", "leaflet", "DT","BH","markdown","rCharts","data.table","dplyr","shinydashboardPlus")
+packages.used=c("shiny", "plotly", "shinydashboard", "leaflet", "DT","BH","markdown","rCharts","data.table","dplyr","shinydashboardPlus","shinyWidgets")
 
 # check packages that need to be installed.
 packages.needed=setdiff(packages.used, 
@@ -21,6 +21,7 @@ require(markdown)
 require(data.table)
 library(dplyr)
 library(shinydashboardPlus)
+library(shinyWidgets)
 
 # Choices for drop-downs
 # Delete states without universities: AS, FM, GU, MH, MP, PR, PW
@@ -51,6 +52,8 @@ Major = c("-----",
 
 
 navbarPage("Find your university!", id="nav",
+           
+           setBackgroundImage(src="CU.jpg"),
            
            tabPanel("Map",
                     fluidRow(
@@ -89,8 +92,6 @@ navbarPage("Find your university!", id="nav",
                                       p(".....") 
                                       
                         )
-            
-                                 
                         )
                     
            )),
@@ -144,22 +145,24 @@ navbarPage("Find your university!", id="nav",
                       
                       tabsetPanel(
                         tabPanel(p(icon("line-chart"),"Data Comparison"),
-                                 fluidRow(
-                                   dataTableOutput("table.summary2")),
-                                 #tabPanel(p(icon("line-chart"),"Visulization"),
-                                 plotOutput("graph.summary3"))
-                        
-                        
-                        #tags$style(type="text/css", '#myTable tfoot {display:none;}')
-                      ))),
+                                 dataTableOutput("table.summary2")),
+                        tabPanel(p(icon("line-chart"),"Visulization"),
+                                 plotOutput("graph.summary3")
+                                 
+                                 
+                                 #tags$style(type="text/css", '#myTable tfoot {display:none;}')
+                        )))),
            
            tabPanel(title = "Data Exploration",
-                   
+                    sidebarPanel(
+                      selectInput("universities.table", "Variables to show:",
+                                                           c("SAT_1" = "SAT_1",
+                                                            "ADM_1" = "ADM_1",
+                                                            "FEM_1" = "FEM_1",
+                                                            "ACT_1" = "ACT_1",
+                                                            "ENR_1" = "ENR_1"))),
                       # actionLink("selectall","Select All")
-                      
-     
-                      
-                 
+
                       #format = "####"),
                       # uiOutput("themesControl"), # the id
                       # actionButton(inputId = "clearAllBottom",
@@ -176,6 +179,7 @@ navbarPage("Find your university!", id="nav",
                 
                                plotlyOutput("SAT_1"),
                                plotlyOutput("ADM_1"),
+                               plotlyOutput("FEM_1"),
                                plotlyOutput("ACT_1"),
                                plotlyOutput("ENR_1")
                         ),
@@ -184,6 +188,7 @@ navbarPage("Find your university!", id="nav",
                               
                                plotlyOutput("SAT_2"),
                                plotlyOutput("ADM_2"),
+                               plotlyOutput("FEM_2"),
                                plotlyOutput("ACT_2"),
                                plotlyOutput("ENR_2")
                         )
