@@ -320,7 +320,7 @@ shinyServer(function(input, output, session) {
       colnames(table_result)<-Name
       #my.summary <- data.frame(cbind(Institution, Info))
       #my.summary
-      datatable(table_result[-1,])
+      datatable(table_result[-1,],options = list(paging = FALSE,ordering = FALSE,searching = FALSE))
       
     } else
       datatable(d5()[s, ])
@@ -415,10 +415,10 @@ shinyServer(function(input, output, session) {
       
       dataset<-datasetInput1()
       colnames(dataset)<-c("Institution","Attribute")
-      dataset
+      datatable(dataset,options = list(paging = FALSE, searching = FALSE,ordering = FALSE))
       
     } else
-      datatable(d5()[s, ])
+      datatable(d5()[s, ],options = list(paging = FALSE, searching = FALSE,ordering = FALSE))
   })
   
   
@@ -493,28 +493,36 @@ shinyServer(function(input, output, session) {
                #"Highest Degree" = cbind(Name[-1],table_result[4,-1]),
                #"Type of Institution" = cbind(Name[-1],table_result[5,-1]),
                #"Location" = cbind(Name[-1],table_result[6,-1]),
-               "Male %" = cbind(Name[-1],table_result[7,-1]),
-               "Female %" = cbind(Name[-1],table_result[8,-1]),
-               "Average age of entry" = cbind(Name[-1],table_result[9,-1]),
-               "% of Undergraduates aged 25+" = cbind(Name[-1],table_result[10,-1]),
-               "Undergraduate students receiving federal loan %" = cbind(Name[-1],table_result[11,-1]),
-               "Median Debt: Students who have completed" = cbind(Name[-1],table_result[12,-1]),
-               "Median Debt: Students who have NOT completed" = cbind(Name[-1],table_result[13,-1]),
-               "Median Earnings: Students 10 years after entry" = cbind(Name[-1],table_result[14,-1]),
-               "Tuition in state" = cbind(Name[-1],table_result[15,-1]),
-               "Tuition out state" = cbind(Name[-1],table_result[16,-1])
+               "Male %" = cbind(Name,table_result[7,]),
+               "Female %" = cbind(Name,table_result[8,]),
+               "Average age of entry" = cbind(Name,table_result[9,]),
+               "% of Undergraduates aged 25+" = cbind(Name,table_result[10,]),
+               "Undergraduate students receiving federal loan %" = cbind(Name,table_result[11,]),
+               "Median Debt: Students who have completed" = cbind(Name,table_result[12,]),
+               "Median Debt: Students who have NOT completed" = cbind(Name,table_result[13,]),
+               "Median Earnings: Students 10 years after entry" = cbind(Name,table_result[14,]),
+               "Tuition in state" = cbind(Name,table_result[15,]),
+               "Tuition out state" = cbind(Name,table_result[16,])
         )})
       
       dataset1<-datasetInput2()
       n<-nrow(dataset1)
-      v1<-c(1:n)
-      v2<-as.numeric(c(dataset1[,2]))
+      v1<-as.character(c(dataset1[c(2:n),1]))
+      v2<-as.numeric(c(dataset1[c(2:n),2]))
+      mydata<-data.frame(group = v1, FR = v2)
+      #mydata1<-melt(mydata,id.vars = "group")
+      #dataset2<-data.frame(cbind(v1,v2))
+      
       #dataset2<-data.frame(dataset1)
-      #colnames(dataset2)<-c("Institution","Attribute")
+      #rownames(dataset2)<-c(dataset1[c(2:n),1])
       
       #dataset2$Institution <-as.numeric(dataset2$Institution)
       #dataset2$Attribute <-as.numeric(dataset2$Attribute)
-      plot(v1,v2,type = "h", xlab = "Instuitions", ylab = "Attribute")
+      #p1<- ggplot(mydata,aes(x=factor(1),y = FR, fill = factor(group)))+geom_bar(width = 1,stat = "identity")+coord_polar(theta = "y")
+      #
+      #pie3D(mydata$FR, labels = mydata$group, main = "An exploded 3D pie chart", explode=0.1, radius=.9, labelcex = 1.2,  start=0.7)
+      ggplot(mydata, aes(group, FR)) +   
+        geom_bar(aes(fill = group), position = "dodge", stat="identity")
       
     } else
       ggplot(ggplot() + ggtitle("Please select a university."))

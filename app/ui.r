@@ -51,7 +51,7 @@ Major = c("-----",
           "Business, Management, Marketing, and Related Support Services","History")
 
 
-navbarPage("Find your university!", id="nav",
+navbarPage("Find Your University!", id="nav",
            
            setBackgroundImage(src="CU.jpg"),
            
@@ -145,13 +145,14 @@ navbarPage("Find your university!", id="nav",
                       
                       tabsetPanel(
                         tabPanel(p(icon("line-chart"),"Data Comparison"),
-                                 dataTableOutput("table.summary2")),
-                        tabPanel(p(icon("line-chart"),"Visulization"),
-                                 plotOutput("graph.summary3")
-                                 
-                                 
-                                 #tags$style(type="text/css", '#myTable tfoot {display:none;}')
-                        )))),
+                                 fluidRow(
+                                   dataTableOutput("table.summary2")),
+                                 #tabPanel(p(icon("line-chart"),"Visulization"),
+                                 plotOutput("graph.summary3"))
+                        
+                        
+                        #tags$style(type="text/css", '#myTable tfoot {display:none;}')
+                      ))),
            
            tabPanel(title = "Data Exploration",
                     sidebarPanel(
