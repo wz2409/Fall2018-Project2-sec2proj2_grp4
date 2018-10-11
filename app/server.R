@@ -7,11 +7,11 @@ library(plotly)
 library(ggplot2)
 
 options(warn=-1)
-#options(warn=0)
-
+#loads data
 load("../data/workdata.Rdata")
 load("../data/fulldata.Rdata")
 
+#Initialize Shiny
 shinyServer(function(input, output, session) {
   map = leaflet() %>%
     addTiles() %>%
@@ -112,11 +112,7 @@ shinyServer(function(input, output, session) {
       d5 <- filter(d4(), STABBR == st())
     }
   })
-  
-  
-  # leaflet(data =d5())%>%
-  #   addTiles()%>%
-  #   addMarkers(~long, ~lat)
+  # Map tab functionality
   
   output$mymap <- renderLeaflet({
     urls <-
@@ -246,16 +242,12 @@ shinyServer(function(input, output, session) {
       formatCurrency(c("Tuition (in-state)", "Tuition (out-of-state)"), digits = 0)
   }, server = T)
   
-  
-  
-  #Introduction-------------------------------------------------------------------------------------------
-  
  
   #Selected indices--------------------------------------------------------------------------------------
   
   output$table.summary1 = DT::renderDataTable({
     s = input$universities.table_rows_selected
-    #s = input$universities.table_row_last_clicked
+
     if (length(s)) {
       sub <- d5()[s, ]
       n = length(s)
@@ -264,7 +256,7 @@ shinyServer(function(input, output, session) {
       sub_1 <- filter(fulldata, INSTNM == university)
       
       sub_2 <- filter(fulldata, INSTNM == university)
-      #sub_2[sub_2 == "NULL"] <- NA
+
       
       Basic <-
         c("Name",
@@ -288,13 +280,9 @@ shinyServer(function(input, output, session) {
       Info<-cbind(Info,Basic)
       for (i in 1:n){
         Institution<-c(sub[i,]$INSTNM ,
-                       #sub[i,]$INSTURL,
                        paste0(
-                         #as.character("<b><a href='http://"),
                          as.character(sub[i,]$INSTURL)
-                         #"'>",
-                         #as.character(sub[i,]$INSTNM),
-                         #as.character("</a></b>")
+
                        ),
                        sub[i,]$CITY,
                        sub[i,]$HIGHDEG,
@@ -318,8 +306,7 @@ shinyServer(function(input, output, session) {
       Name<-Info[1,]
       table_result<-Info
       colnames(table_result)<-Name
-      #my.summary <- data.frame(cbind(Institution, Info))
-      #my.summary
+
       datatable(table_result[-1,],options = list(paging = FALSE,ordering = FALSE,searching = FALSE))
       
     } else
@@ -327,11 +314,9 @@ shinyServer(function(input, output, session) {
   })
   
   
-  
-  
   output$table.summary2 = DT::renderDataTable({
     s = input$universities.table_rows_selected
-    #s = input$universities.table_row_last_clicked
+
     if (length(s)) {
       sub <- d5()[s, ]
       n = length(s)
@@ -385,16 +370,10 @@ shinyServer(function(input, output, session) {
                        as.numeric(sub_1[i,]$TUITIONFEE_OUT))
         Info<-cbind(Info,Institution)
       }
-      #as.data.frame(Info)
       Name<-Info[1,]
       table_result<-Info
       colnames(table_result)<-Name
-      #my.summary <- data.frame(cbind(Institution, Info))
-      #my.summary
-      #table_result
-      
-      
-      
+
       datasetInput1<-reactive({
         switch(input$universities.table1,
                "Name" = cbind(Name[-1],table_result[1,-1]),
@@ -422,10 +401,10 @@ shinyServer(function(input, output, session) {
   })
   
   
-  
+  #summary graphs
   output$graph.summary3 = renderPlot({
     s = input$universities.table_rows_selected
-    #s = input$universities.table_row_last_clicked
+
     if (length(s)) {
       sub <- d5()[s, ]
       n = length(s)
@@ -447,7 +426,6 @@ shinyServer(function(input, output, session) {
           "Female %",
           "Average age of entry",
           "% of Undergraduates aged 25+",
-          
           "Undergraduate students receiving federal loan %",
           "Median Debt: Students who have completed",
           "Median Debt: Students who have NOT completed",
@@ -487,12 +465,6 @@ shinyServer(function(input, output, session) {
       
       datasetInput2<-reactive({
         switch(input$universities.table2,
-               #"Name" = cbind(Name[-1],table_result[1,-1]),
-               #"Website" = cbind(Name[-1],table_result[2,-1]),
-               #"City" = cbind(Name[-1],table_result[3,-1]),
-               #"Highest Degree" = cbind(Name[-1],table_result[4,-1]),
-               #"Type of Institution" = cbind(Name[-1],table_result[5,-1]),
-               #"Location" = cbind(Name[-1],table_result[6,-1]),
                "Male %" = cbind(Name,table_result[7,]),
                "Female %" = cbind(Name,table_result[8,]),
                "Average age of entry" = cbind(Name,table_result[9,]),
@@ -510,35 +482,21 @@ shinyServer(function(input, output, session) {
       v1<-as.character(c(dataset1[c(2:n),1]))
       v2<-as.numeric(c(dataset1[c(2:n),2]))
       mydata<-data.frame(Institution = v1, Statistic = v2)
-      #mydata1<-melt(mydata,id.vars = "group")
-      #dataset2<-data.frame(cbind(v1,v2))
-      
-      #dataset2<-data.frame(dataset1)
-      #rownames(dataset2)<-c(dataset1[c(2:n),1])
-      
-      #dataset2$Institution <-as.numeric(dataset2$Institution)
-      #dataset2$Attribute <-as.numeric(dataset2$Attribute)
-      #p1<- ggplot(mydata,aes(x=factor(1),y = FR, fill = factor(group)))+geom_bar(width = 1,stat = "identity")+coord_polar(theta = "y")
-      #
-      #pie3D(mydata$FR, labels = mydata$group, main = "An exploded 3D pie chart", explode=0.1, radius=.9, labelcex = 1.2,  start=0.7)
+
       ggplot(mydata, aes(Institution, Statistic)) +
         theme(panel.background = element_rect(fill = "white"),plot.title = element_text(colour = "black", size = 16, vjust = 1),plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "inches")) +
         geom_text(aes(label = Statistic, vjust = -0.8, hjust = 0.5), show_guide = FALSE) +
         geom_bar(aes(fill = Institution), position = "dodge", stat="identity",width = 0.9)+
-        ggtitle("Bar Plot of Selected Countries")
+        ggtitle("Comparisons of Selected Universities")
       
     } else
       ggplot() + ggtitle("Please select a university.")+
       theme(panel.background = element_rect(fill = "white"),plot.title = element_text(colour = "black", size = 16, vjust = 1),plot.margin = unit(c(0.2, 0.2, 0.2, 0.2), "inches"))
-    #datatable(d5()[s, ])
+
   })
   
   
   #------------------------------------------------------------------------------------------------------
-
-
-  #output$Univeristy1 <- as.character(input$universities.table_rows_selected[1])
-  #output$Univeristy2 <- as.character(input$universities.table_rows_selected[2])
  
   
   #Graphical Analysis
@@ -551,9 +509,8 @@ output$graph1<- renderPlot({
       
       university1 <- d5()$INSTNM[s]
       edu_1 <- filter(fulldata, INSTNM == university1)
-      #edu_1$INSTNM
+
       edu_1$Year = as.numeric(edu_1$Year)
-      
       edu_1$ADM_RATE = as.numeric(edu_1$ADM_RATE)
       edu_1$SAT_AVG = as.numeric(edu_1$SAT_AVG)
       edu_1$ACTCMMID = as.numeric(edu_1$ACTCMMID)
@@ -561,9 +518,8 @@ output$graph1<- renderPlot({
       
       university2 <- d5()$INSTNM[x]
       edu_2 <- filter(fulldata, INSTNM == university2)
-      #edu_2$INSTNM
-      edu_2$Year = as.numeric(edu_2$Year)
       
+      edu_2$Year = as.numeric(edu_2$Year)
       edu_2$ADM_RATE = as.numeric(edu_2$ADM_RATE)
       edu_2$SAT_AVG = as.numeric(edu_2$SAT_AVG)
       edu_2$ACTCMMID = as.numeric(edu_2$ACTCMMID)
@@ -571,20 +527,17 @@ output$graph1<- renderPlot({
       
       dataInput<-reactive({
         switch(input$universities.table4,
-               #"Year" = list(edu_1$Year,edu_2$Year)
                "ADM" = edu_1[,c("ADM_RATE","Year")],#,edu_2[,c("ADM_RATE","Year")]),
                "SAT" = edu_1[,c("SAT_AVG","Year")],#,edu_2[,c("SAT_AVG","Year")]),
                "ACT" = edu_1[,c("ACTCMMID","Year")],#,edu_2[,c("ACTCMMID","Year")]),
                "UGDS" = edu_1[,c("UGDS","Year")]#,edu_2[,c("UGDS","Year")])
-               
         )
       })
       
       mydata<-dataInput()
       colnames(mydata)<-c("Attribute","Year")
       as.data.frame(mydata)
-      #plot(mydata[,2],mydata[,1])}
-    #Name<-colnames(mydata[[1]])[1]
+
     ggplot(data = mydata, aes(x = Year, y = Attribute)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Trends")
     }
     
@@ -601,9 +554,8 @@ output$graph2<- renderPlot({
       
       university1 <- d5()$INSTNM[s]
       edu_1 <- filter(fulldata, INSTNM == university1)
-      #edu_1$INSTNM
+
       edu_1$Year = as.numeric(edu_1$Year)
-      
       edu_1$ADM_RATE = as.numeric(edu_1$ADM_RATE)
       edu_1$SAT_AVG = as.numeric(edu_1$SAT_AVG)
       edu_1$ACTCMMID = as.numeric(edu_1$ACTCMMID)
@@ -611,9 +563,8 @@ output$graph2<- renderPlot({
       
       university2 <- d5()$INSTNM[x]
       edu_2 <- filter(fulldata, INSTNM == university2)
-      #edu_2$INSTNM
-      edu_2$Year = as.numeric(edu_2$Year)
       
+      edu_2$Year = as.numeric(edu_2$Year)
       edu_2$ADM_RATE = as.numeric(edu_2$ADM_RATE)
       edu_2$SAT_AVG = as.numeric(edu_2$SAT_AVG)
       edu_2$ACTCMMID = as.numeric(edu_2$ACTCMMID)
@@ -626,15 +577,13 @@ output$graph2<- renderPlot({
                "SAT" = edu_2[,c("SAT_AVG","Year")],#,edu_2[,c("SAT_AVG","Year")]),
                "ACT" = edu_2[,c("ACTCMMID","Year")],#,edu_2[,c("ACTCMMID","Year")]),
                "UGDS" = edu_2[,c("UGDS","Year")]#,edu_2[,c("UGDS","Year")])
-               
         )
       })
       
       mydata<-dataInput()
       colnames(mydata)<-c("Attribute","Year")
       as.data.frame(mydata)
-      #plot(mydata[,2],mydata[,1])}
-      #Name<-colnames(mydata[[1]])[1]
+      #creates graph
       ggplot(data = mydata, aes(x = Year, y = Attribute)) + geom_point() + geom_smooth(method = lm, color = "black") + ggtitle("Trends")
       
     }
@@ -643,7 +592,6 @@ output$graph2<- renderPlot({
       ggplot() + ggtitle("Please select a university.")
     }
 })
-  
   
   
 

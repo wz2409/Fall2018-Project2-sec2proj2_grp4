@@ -90,9 +90,6 @@ navbarPage("Find Your University!", id="nav",
                     fluidRow(
                       
                       dataTableOutput("universities.table"),
-                      #tags$style(type="text/css", '#myTable tfoot {display:none;}')), 
-                      
-                      
                       
                       hr()
                       
@@ -136,12 +133,8 @@ navbarPage("Find Your University!", id="nav",
                       tabsetPanel(
                         tabPanel(p(icon("line-chart"),"Data Comparison"),
                                  fluidRow(
-                                   dataTableOutput("table.summary2")),
-                                 #tabPanel(p(icon("line-chart"),"Visulization"),
+                                 dataTableOutput("table.summary2")),
                                  plotOutput("graph.summary3"))
-                        
-                        
-                        #tags$style(type="text/css", '#myTable tfoot {display:none;}')
                       ))),
            
            tabPanel(title = "Data Exploration",
@@ -151,46 +144,21 @@ navbarPage("Find Your University!", id="nav",
                                                              "SAT Scores" = "SAT",
                                                              "ACT Scores" = "ACT",
                                                              "Admitted Undergrads" = "UGDS"))),
-                      # actionLink("selectall","Select All")
 
-                      #format = "####"),
-                      # uiOutput("themesControl"), # the id
-                      # actionButton(inputId = "clearAllBottom",
-                      #             label = "Clear selection",
-                      #             icon = icon("square-o")),
-                      # actionButton(inputId = "selectAllBottom",
-                      #             label = "Select all",
-                       #            icon = icon("check-square-o"))
-                  
                     mainPanel(
                       fluidRow(
                         column(6,
                                p(icon("line-chart"), "Univeristy1"),
-                
-                               #plotlyOutput("SAT_1"),
-                               #plotlyOutput("ADM_1"),
-                               #plotlyOutput("FEM_1"),
-                               #plotlyOutput("ACT_1"),
                                plotOutput("graph1")
                         ),
                         column(6,
                                p(icon("line-chart"), "Univeristy2"),
-                              
-                               #plotlyOutput("SAT_2"),
-                               #plotlyOutput("ADM_2"),
-                               #plotlyOutput("FEM_2"),
-                               #plotlyOutput("ACT_2"),
                                plotOutput("graph2")
                         )
                    )
            )),         
-           # tabPanel(title = "Admission Rate Trend", width = 12, solidHeader = T, plotlyOutput("ADM")),
-           # tabPanel(title = "Average SAT Trend", width = 12, solidHeader = T, plotlyOutput("SAT")),
-           # tabPanel(title = "MID ACT Trend", width = 12, solidHeader = T, plotlyOutput("ACT")),
-           # tabPanel(title = "Share of Female Students Trend", width = 12, solidHeader = T, plotlyOutput("FEM")),
-           # tabPanel(title = "Total Enrollments Trend", width = 12, solidHeader = T, plotlyOutput("ENR")),         
        
-           tabPanel("About us", id="about",
+           tabPanel("About Us", id="about",
                     fluidRow(top=200,align="center",
                       
                       HTML('<p><img src="aboutus.png" style="width:800px;height:600px align="middle"></p>')
