@@ -128,7 +128,7 @@ navbarPage("Find Your University!", id="nav",
                       hr(),
                       hr(),
                       
-                      selectInput("universities.table2", "Select an Attribute to Visulize:",
+                      selectInput("universities.table2", "Select an Attribute to View:",
                                   c(
                                     "Male %" = "Male %",
                                     "Female %" = "Female %",
