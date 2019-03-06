@@ -29,19 +29,20 @@ Term: Spring 2018
 
 +**Added Functionality**:
 
-We made the map more interactive. For example, students can now be directed to the selected school
-website from the map. They can also access Quick-Facts about the school before proceeding to learn more.  
-
-Our Ranking Tab now allows students to select schools they wish to learn more about. 
-
-Our Overall Comparison now gives side by side comparison of admission, demographics, tuition, and campus life of different colleges.
-
-Our Detailed Summary Tab allows students to get a more customizable experience. Students can choose which comparisons they'll like to see and they'll see it in a more appealing display. It allows students to access information quicker and all in one convenient place. 
-
-Our Data Exploration Tab allows you to see side by side comparison of Admission stats over the last decade. This gives students an idea of where  they currently stand. 
-
-We added an About Us tab so that the user could learn more about the functionality of the app and the development team. 
+We made the map more interactive. For example, users can now be directed to the selected school
+website from the map. They can also access quick facts about the school before proceeding to learn more. 
 Overall we changed labels to more user-friendly titles. We changed the ordering of the tabs simplifying user navigation. 
+
+Ranking Tab now allows users to select and see more information of the colleges they are interested in. 
+
+Overall Comparison now gives side by side comparison of admission, demographics, tuition, and campus life of different colleges.
+
+Detailed Summary Tab gives visualization of two selected attributes and shows customizable comparisons in an intuitive way. It allows users to access information faster more conveniently. 
+
+Data Exploration Tab shows side by side comparison of Admission stats over the last decade. This gives students an idea of where they currently stand. 
+
+About Us tab allows users could learn more about the functionality of the app and the development team. 
+
 
 
 + **Data Scorce**: 
